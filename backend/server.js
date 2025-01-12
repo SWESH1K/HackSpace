@@ -1,11 +1,14 @@
 import express from "express"
 import dotenv from "dotenv"
-import {connectDB} from "./config/db.js"
+import { connectDB } from "./config/db.js"
 import path from "path"
 import { auth } from 'express-openid-connect'
+import mainRoute from './routes/main.route.js'
 
 const app = express()
 dotenv.config() // Load the .env variables
+
+const inProduction = process.env.NODE_ENV == 'production'
 
 // Auth0 Config
 const config = {
@@ -26,7 +29,11 @@ const SERVER_PORT = 5000 // Port of the server
 
 app.use(express.json()) // allows us to accept json data in req.body
 
-if(process.env.NODE_ENV == 'production') {
+// Use the main routes
+app.use('/', mainRoute)
+
+// This will run only in production
+if (inProduction) {
     app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
     app.get("*", (req, res) => {
