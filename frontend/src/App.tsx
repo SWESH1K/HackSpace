@@ -4,11 +4,16 @@ import { useUser } from './hooks/useUser';
 function Home() {
   const user = useUser();
 
+  console.log(user?.picture)
+
   return (
-    <div>
+    <div className="full-screen">
       <NavBar />
-      <div className="p-4">
-        {user && <pre>{JSON.stringify(user, null, 2)}</pre>}
+      <div className="full-screen">
+        {
+          user &&
+          <div className="text-5xl font-bold full-screen">Hello, {user.name}</div>
+        }
       </div>
     </div>
   )

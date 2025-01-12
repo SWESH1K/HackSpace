@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 
+interface User {
+  name: string;
+  picture: string;
+  // Add other properties as needed
+}
+
 export function useUser() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     fetch('/api/user', { method: "GET" })
