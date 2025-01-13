@@ -5,11 +5,11 @@ import { ThemeProvider } from '@/components/theme-provider';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <div className="full-screen bg-emerald-200 dark:bg-emerald-950 dark:text-foreground">
+  <div className="full-screen bg-emerald-200 dark:bg-zinc-950 dark:text-foreground">
     <React.StrictMode>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
           <App />
         </ThemeProvider>
     </React.StrictMode>
-  </div>
+  // </div>
 );

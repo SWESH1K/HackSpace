@@ -11,7 +11,7 @@ interface UserButtonProps {
 
 export default function UserButton({ user }: UserButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const user_profile_picture = `${user.picture}`
+  const user_profile_picture = `${user.picture}`;
 
   console.log("User profile picture URL:", user_profile_picture);
 
@@ -26,20 +26,20 @@ export default function UserButton({ user }: UserButtonProps) {
 
   return (
     <div className="relative">
-      <Button className="h-12 w-auto pt-7 pb-7" onClick={toggleDropdown}>
-        <div className="flex items-center space-x-2 p-2 rounded-lg">
-          <Avatar>
+      <Button className="h-10 w-auto pt-5 pb-5" onClick={toggleDropdown}>
+        <div className="flex items-center space-x-2 p-1 rounded-lg">
+          <Avatar className="h-8 w-8">
             <AvatarImage src={user_profile_picture} alt="User Avatar" />
             <AvatarFallback className="bg-gray-200 text-gray-800">{user.name ? user.name[0] : 'U'}</AvatarFallback>
           </Avatar>
-          <div className="text-l font-bold">{getFirstName(user.name)}</div>
+          <div className="text-sm font-bold">{getFirstName(user.name)}</div>
         </div>
       </Button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-background border text-foreground rounded-lg shadow-lg">
-          <a href="/profile" className="block px-4 py-2 hover:bg-emerald-600">Profile</a>
-          <a href="/settings" className="block px-4 py-2 hover:bg-emerald-600">Settings</a>
-          <a href="/logout" className="block px-4 py-2 hover:bg-emerald-600">Logout</a>
+          <a href="/profile" className="block px-4 py-2 hover:bg-secondary">Profile</a>
+          <a href="/settings" className="block px-4 py-2 hover:bg-secondary">Settings</a>
+          <a href="/logout" className="block px-4 py-2 hover:bg-secondary">Logout</a>
         </div>
       )}
     </div>
