@@ -16,7 +16,9 @@ export default function NavBar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 flex flex-col md:flex-row justify-between items-start md:items-center p-2 md:p-4 bg-transparent">
       <div className="flex justify-between items-center w-full md:w-auto">
-        <div className="text-xl md:text-3xl font-bold">HackSpace</div>
+        <div className="text-xl md:text-3xl font-bold" style={{ textShadow: "2px 2px 1px black" }}>
+          HackSpace
+        </div>
         <button className="md:hidden text-xl" onClick={toggleMenu}>
           ☰
         </button>

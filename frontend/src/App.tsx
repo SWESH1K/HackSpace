@@ -1,6 +1,7 @@
 import { useUser } from './hooks/useUser';
 import { HeroHighlightDemo } from "./components/main-screen";
 import NavBar from './components/NavBar';
+import { ScrollingTablet } from './components/scroll-tab-container';
 
 function Home() {
   const user = useUser();
@@ -11,6 +12,7 @@ function Home() {
     <div className="full-screen">
       <NavBar />
       <HeroHighlightDemo />
+      <ScrollingTablet />
     </div>
   );
 }
