@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import { connectDB } from "./config/db.js"
 import path from "path"
 import { auth } from 'express-openid-connect'
-import mainRoute from './routes/main.route.js'
+import mainRoute from './routes/main.routes.js'
 
 const app = express()
 dotenv.config() // Load the .env variables
