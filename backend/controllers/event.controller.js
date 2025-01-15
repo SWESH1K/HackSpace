@@ -3,9 +3,13 @@ import Event from "../models/event.model.js"
 export const createEvent = async (req, res) => {
     const event = req.body
 
-    const newEvent = new Event(event)
-
     try {
+        const existingEvent = await Event.findOne({ title: event.title })
+        if (existingEvent) {
+            return res.status(400).json({ success: false, message: `Event with title "${event.title}" already exists` })
+        }
+
+        const newEvent = new Event(event)
         await newEvent.save()
         res.status(201).json({success: true, data: newEvent})
     } catch(error) {
@@ -23,6 +27,25 @@ export const getEvents = async(req, res) => {
         const allEvents = await Event.find({})
         res.status(200).json({success: true, data: allEvents})
     } catch(error) {
+        res.status(500).json({success: false, message: `Server Error: ${error}`})
+    }
+}
+
+export const updateEvent = async(req, res) => {
+    const { id } = req.params
+    const event = req.body
+
+    try {
+        const updatedEvent = await Event.findByIdAndUpdate(id, event, {new: true, runValidators: true})
+        if (!updatedEvent) {
+            res.status(404).json({success: false, message: `Event with id ${id} not found`})
+        }
+
+        res.status(200).json({success: true, data: updatedEvent})
+    } catch(error) {
+        if(error.name == "ValidationError") {
+            res.status(400).json({success: false, message: error.message})
+        }
         res.status(500).json({success: false, message: `Server Error: ${error}`})
     }
 }

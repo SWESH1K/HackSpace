@@ -27,8 +27,7 @@ import mongoose from "mongoose";
 const RoundSchema = new mongoose.Schema({
     number: {
         type: Number,
-        required: true,
-        unique: true,
+        required: true
     },
     name: {
         type: String,
@@ -70,7 +69,7 @@ const EventSchema = new mongoose.Schema({
                     const roundNumbers = rounds.map(round => round.number);
                     return new Set(roundNumbers).size === roundNumbers.length;
                 },
-                message: 'Round numbers must be unique'
+                message: 'Round numbers must be unique within an event'
             },
             {
                 validator: function (rounds) {
