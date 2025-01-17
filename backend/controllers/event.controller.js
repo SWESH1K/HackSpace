@@ -50,6 +50,20 @@ export const updateEvent = async(req, res) => {
     }
 }
 
+export const deleteEvent = async(req, res) => {
+    const { id } = req.params
+    
+    try {
+        await Event.findByIdAndDelete(id)
+        res.status(200).json({success: true, message: "Event deleted successfully!"})
+    } catch(error) {
+        if(error.name == "ValidationError") {
+            res.status(400).json({success: false, message: error.message})
+        }
+        res.status(500).json({success: false, message: `Server Error: ${error}`})
+    }
+}
+
 export const deleteAllEvents = async(req, res) => {
     try {
         await Event.deleteMany()

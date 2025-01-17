@@ -27,7 +27,8 @@ import mongoose from "mongoose";
 const RoundSchema = new mongoose.Schema({
     number: {
         type: Number,
-        required: true
+        required: true,
+        unique: false
     },
     name: {
         type: String,
@@ -42,6 +43,14 @@ const RoundSchema = new mongoose.Schema({
 const EventSchema = new mongoose.Schema({
     title: {
         type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    price_money: {
+        type: Number,
         required: true
     },
     banner_url: {
@@ -77,7 +86,8 @@ const EventSchema = new mongoose.Schema({
                 },
                 message: 'Number of rounds exceeds the specified num_rounds'
             }
-        ]
+        ],
+        unique: false
     }
 }, {
     timestamps: true
