@@ -1,9 +1,9 @@
 import { useUser } from './hooks/useUser';
-import { HeroHighlightDemo } from "./components/main-screen";
 import NavBar from './components/NavBar';
-import { ScrollingTablet } from './components/scroll-tab-container';
-import { StickyScrollContent } from './components/scroll-details';
 import Footer from './components/footer';
+import HomePage from './pages/HomePage';
+import EventPage from './pages/EventsPage';
+import {Routes, Route} from "react-router-dom";
 
 function Home() {
   const user = useUser();
@@ -13,9 +13,10 @@ function Home() {
   return (
     <div className="full-screen">
       <NavBar />
-      <HeroHighlightDemo />
-      <ScrollingTablet />
-      <StickyScrollContent />
+      <Routes>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/events" element={<EventPage />}></Route>
+      </Routes>
       <Footer />
     </div>
   );
