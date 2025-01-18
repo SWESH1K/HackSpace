@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { HeroHighlight } from "./ui/hero-highlight";
 import { MainTitle } from "./main-title";
+import { HoverBorderGradientDemo } from "./hover-border-gradient-demo";
 
 export function HeroHighlightDemo() {
   return (
@@ -23,6 +24,7 @@ export function HeroHighlightDemo() {
       >
         <MainTitle />
       </motion.h1>
+      <HoverBorderGradientDemo />
     </HeroHighlight>
   );
 }
