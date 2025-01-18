@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.post("/", createEvent)
 router.get("/", getEvents)
+router.delete("/", deleteAllEvents)
 router.delete("/:id", deleteEvent)
-router.delete("/all", deleteAllEvents)
 router.put("/:id/updateEvent", updateEvent)
 
 // Forward to the rounds router.
