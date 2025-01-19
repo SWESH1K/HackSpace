@@ -13,7 +13,6 @@ export default function UserButton({ user }: UserButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const user_profile_picture = `${user.picture}`;
 
-  console.log("User profile picture URL:", user_profile_picture);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

@@ -1,12 +1,20 @@
 import Event from "../models/event.model.js"
 
 export const createEvent = async (req, res) => {
-    // const event = new Event({
-    //     ...req.body,
-    //     organiser: req.oidc.user.sub // Assuming the user ID is available in req.oidc.user.sub
-    // });
 
-    const event = new Event(req.body)
+    // Ensure the user is authenticated and has a valid user ID
+    if (!req.oidc || !req.oidc.user || !req.oidc.user.sub) {
+        return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+
+    // console.log(`User: ${req.oidc.user.sub}`)
+
+    const event = new Event({
+        ...req.body,
+        organiser: req.body.organiser || req.oidc.user.sub // Assuming the user ID is available in req.oidc.user.sub
+    });
+
+    // const event = new Event(req.body)
 
     try {
         const existingEvent = await Event.findOne({ title: event.title })
@@ -28,6 +36,9 @@ export const createEvent = async (req, res) => {
 }
 
 export const getEvents = async(req, res) => {
+
+    console.log(`User Id: ${req.oidc.user}`)
+
     try {
         const allEvents = await Event.find({})
         res.status(200).json({success: true, data: allEvents})

@@ -89,11 +89,10 @@ const EventSchema = new mongoose.Schema({
         ],
         unique: false
     },
-    // organiser: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    //     required: true
-    // }
+    organiser: {
+        type: String,
+        required: true
+    }
 }, {
     timestamps: true
 })
