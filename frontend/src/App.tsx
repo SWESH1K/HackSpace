@@ -13,7 +13,7 @@ function Home() {
   console.log(user?.picture);
 
   return (
-    <div className="full-screen">
+    <div className="min-h-screen">
       <NavBar />
       <Routes>
         <Route path="/events" element={<EventPage />}></Route>

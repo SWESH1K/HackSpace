@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-interface Event {
+export interface Event {
   _id: string;
   title: string;
   banner_url: string;

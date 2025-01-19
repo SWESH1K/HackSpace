@@ -37,8 +37,6 @@ export const createEvent = async (req, res) => {
 
 export const getEvents = async(req, res) => {
 
-    console.log(`User Id: ${req.oidc.user}`)
-
     try {
         const allEvents = await Event.find({})
         res.status(200).json({success: true, data: allEvents})
