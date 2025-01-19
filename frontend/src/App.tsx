@@ -4,6 +4,8 @@ import Footer from './components/footer';
 import HomePage from './pages/HomePage';
 import EventPage from './pages/EventsPage';
 import {Routes, Route} from "react-router-dom";
+import CreateEventPage from './pages/CreateEventPage';
+import { Toaster } from './components/ui/toaster';
 
 function Home() {
   const user = useUser();
@@ -14,9 +16,11 @@ function Home() {
     <div className="full-screen">
       <NavBar />
       <Routes>
-        <Route path="/" element={<HomePage />}></Route>
         <Route path="/events" element={<EventPage />}></Route>
+        <Route path="/create-event" element={<CreateEventPage />}></Route>
+        <Route path="/" element={<HomePage />}></Route>
       </Routes>
+      <Toaster />
       <Footer />
     </div>
   );

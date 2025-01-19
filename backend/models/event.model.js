@@ -88,7 +88,12 @@ const EventSchema = new mongoose.Schema({
             }
         ],
         unique: false
-    }
+    },
+    // organiser: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // }
 }, {
     timestamps: true
 })

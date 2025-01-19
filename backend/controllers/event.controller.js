@@ -1,7 +1,12 @@
 import Event from "../models/event.model.js"
 
 export const createEvent = async (req, res) => {
-    const event = req.body
+    // const event = new Event({
+    //     ...req.body,
+    //     organiser: req.oidc.user.sub // Assuming the user ID is available in req.oidc.user.sub
+    // });
+
+    const event = new Event(req.body)
 
     try {
         const existingEvent = await Event.findOne({ title: event.title })
