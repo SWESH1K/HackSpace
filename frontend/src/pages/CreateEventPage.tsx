@@ -85,7 +85,7 @@ const CreateEventPage = () => {
           />
         </div>
         <div className="w-full max-w-md mx-auto items-stretch pr-5">
-          <h1 className="text-2xl font-bold mt-[20px] mb-4 text-center">Create Event</h1>
+          <h1 className="text-2xl font-bold mt-[20px] mb-4 text-center">Create Hackathon</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               type="text"
@@ -129,7 +129,7 @@ const CreateEventPage = () => {
               />
             </label>
             <Button type="submit" className="w-full">
-              Create Event
+              Create
             </Button>
           </form>
         </div>

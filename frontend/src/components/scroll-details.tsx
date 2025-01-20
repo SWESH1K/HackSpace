@@ -56,7 +56,7 @@ const content = [
   
 export function StickyScrollContent() {
   return (
-    <div className="p-10">
+    <div className="p-10 bg-white">
       <StickyScroll content={content} />
     </div>
   );

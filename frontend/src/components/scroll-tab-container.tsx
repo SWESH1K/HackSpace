@@ -3,7 +3,7 @@ import { ContainerScroll } from "./ui/container-scroll-animation";
 
 export function ScrollingTablet() {
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-hidden bg-white">
       <ContainerScroll
         titleComponent={
           <>
