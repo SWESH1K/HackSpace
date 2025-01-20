@@ -37,11 +37,6 @@ export const createEvent = async (req, res) => {
 
 export const getEvents = async(req, res) => {
 
-    // Ensure the user is authenticated and has a valid user ID
-    if (!req.oidc || !req.oidc.user || !req.oidc.user.sub) {
-        return res.status(401).json({ success: false, message: "User not authenticated" });
-    }
-
     try {
         const allEvents = await Event.find({})
         res.status(200).json({success: true, data: allEvents})

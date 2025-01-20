@@ -8,6 +8,8 @@ import { Plus } from "lucide-react";
 const EventPage = () => {
   const { events, myevents, loading, error } = useEvents();
 
+  console.log(`MyEvent: ${myevents}`)
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -33,9 +35,9 @@ const EventPage = () => {
         </div>
       </TabsContent>
       <TabsContent value="my-hackathons">
-        <div className="h-auto w-full max-h-[1000px] flex flex-col items-center justify-center bg-gray-300 dark:bg-neutral-900 overflow-x-hidden overflow-y-auto p-[20px]" style={{ paddingTop: 50 }}>
-            <h1 className="font-bold item-left sm:text-[50px] lg:text-[50px]">Your Hackathons</h1>
-              <a href="/create-event" className="self-end mr-[5%]">
+        <div className="h-auto w-full min-h-[1000px] max-h-[1000px] bg-gray-300 dark:bg-neutral-900 overflow-x-hidden overflow-y-auto p-[20px]" style={{ paddingTop: 50 }}>
+            <h1 className="font-bold item-left sm:text-[50px] lg:text-[50px] text-center">Your Hackathons</h1>
+              <a href="/create-event" className="flex justify-end mr-[5%]">
               <Button>
                 <Plus/>Create
               </Button>         

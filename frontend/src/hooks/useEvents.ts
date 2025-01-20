@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useUser, } from './useUser';
 
 export interface Event {
   _id: string;
@@ -26,11 +27,19 @@ export function useEvents() {
   const [myevents, setMyEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const user = useUser();
+
+  console.log(`User in useUser: ${user}`)
 
   useEffect(() => {
     fetchEvents();
-    fetchMyEvents();
   }, []);
+
+  useEffect(() =>{
+    if(user) {
+      fetchMyEvents();
+    }
+  }, [user])
 
   const fetchMyEvents = async () => {
     setLoading(true);
