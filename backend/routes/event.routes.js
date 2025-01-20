@@ -1,11 +1,12 @@
 import express from "express"
-import { createEvent, deleteAllEvents, deleteEvent, getEvents, updateEvent } from "../controllers/event.controller.js"
+import { createEvent, deleteAllEvents, deleteEvent, getEvents, getMyEvents, updateEvent } from "../controllers/event.controller.js"
 import roundsRouter from "../routes/rounds.routes.js"
 
 const router = express.Router()
 
 router.post("/", createEvent)
 router.get("/", getEvents)
+router.get("/my", getMyEvents)
 router.delete("/", deleteAllEvents)
 router.delete("/:id", deleteEvent)
 router.put("/:id/updateEvent", updateEvent)
