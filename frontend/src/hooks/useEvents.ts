@@ -23,12 +23,31 @@ interface Round {
 
 export function useEvents() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [myevents, setMyEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchEvents();
+    fetchMyEvents();
   }, []);
+
+  const fetchMyEvents = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/event/my');
+      const data = await response.json();
+      if (data.success) {
+        setMyEvents(data.data);
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      setError('Error fetching events');
+    } finally {
+      setLoading(false);
+    }
+  };  
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -107,6 +126,7 @@ export function useEvents() {
 
   return {
     events,
+    myevents,
     loading,
     error,
     fetchEvents,

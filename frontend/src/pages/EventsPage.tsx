@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 
 
 const EventPage = () => {
-  const { events, loading, error } = useEvents();
+  const { events, myevents, loading, error } = useEvents();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -41,7 +41,7 @@ const EventPage = () => {
               </Button>         
               </a>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 overflow-y-auto my-10" style={{ width: '100vw', paddingInline: '15%'}}>
-              {events.map((event) => (
+              {myevents.map((event) => (
                 <CardDemo key={event._id} event={event} />
               ))}
             </div>
