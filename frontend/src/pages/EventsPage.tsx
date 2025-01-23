@@ -2,13 +2,11 @@ import { useEvents } from "../hooks/useEvents";
 import CardDemo from "../components/event-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import {  Plus } from "lucide-react";
 
 
 const EventPage = () => {
-  const { events, myevents, loading, error } = useEvents();
-
-  console.log(`MyEvent: ${myevents}`)
+  const { events, myevents, user, loading, error } = useEvents();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -42,6 +40,10 @@ const EventPage = () => {
                 <Plus/>Create
               </Button>         
               </a>
+            
+              {/* Text shown when the user is not logged In. */}
+              {!user && <h6 className="font-sans text-[24px] text-center text-gray-500">Login to Create or View your hackathons!</h6>}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 overflow-y-auto my-10" style={{ width: '100vw', paddingInline: '15%'}}>
               {myevents.map((event) => (
                 <CardDemo key={event._id} event={event} />

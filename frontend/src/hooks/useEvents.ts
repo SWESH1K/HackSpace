@@ -137,6 +137,7 @@ export function useEvents() {
     events,
     myevents,
     loading,
+    user,
     error,
     fetchEvents,
     createEvent,
