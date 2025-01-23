@@ -29,7 +29,6 @@ export function useEvents() {
   const [error, setError] = useState<string | null>(null);
   const user = useUser();
 
-  console.log(`User in useUser: ${user}`)
 
   useEffect(() => {
     fetchEvents();

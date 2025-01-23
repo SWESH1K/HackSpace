@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { format } from 'date-fns';
+import { useNavigate } from "react-router-dom";
 
 interface CardDemoProps {
   event: {
+    _id: string;
     title: string;
     banner_url: string;
     price_money: number;
@@ -15,7 +17,7 @@ interface CardDemoProps {
 
 export default function CardDemo({ event }: CardDemoProps) {
   const [organiser, setOrganiser] = useState<{ name: string; picture: string } | null>(null);
-
+  const navigate = useNavigate()
   useEffect(() => {
     // Fetch organiser details
     const fetchOrganiserDetails = async () => {
@@ -35,7 +37,7 @@ export default function CardDemo({ event }: CardDemoProps) {
   const startDateTime = format(new Date(event.start_time), 'PP');
 
   return (
-    <div className="max-w-xs w-full group/card">
+    <div className="max-w-xs w-full group/card" onClick={()=>navigate(`/events/${event._id}`)}>
       <div
         className={cn(
           "cursor-pointer overflow-hidden relative card h-96 rounded-md shadow-xl max-w-sm mx-auto backgroundImage flex flex-col justify-between p-4"
