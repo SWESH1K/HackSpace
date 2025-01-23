@@ -45,6 +45,20 @@ export const getEvents = async(req, res) => {
     }
 }
 
+export const getEvent = async(req, res) => {
+    const id = req.params.id
+
+    try {
+        const event = await Event.find({_id: id})
+        if (!event) {
+            res.status(404).json({success: false, message: `Event with id ${id} not found`})
+        }
+        res.status(200).json({success: true, data: event})
+    } catch(error) {
+        res.status(500).json({success: false, message: `Error: ${error}`})
+    }
+}
+
 export const getMyEvents = async(req, res) => {
     try {
         const userId = req.oidc.user.sub;
