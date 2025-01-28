@@ -1,6 +1,4 @@
-import * as React from "react"
-// import { GalleryVerticalEnd } from "lucide-react"
-
+import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,9 +10,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// This is sample data.
 const data = {
   navMain: [
     {
@@ -22,140 +19,63 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
+          title: "Overview",
           url: "#",
           isActive: true,
         },
         {
-          title: "Rendering",
+          title: "Problem Statements",
           url: "#",
         },
         {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
+          title: "Rules and Instructions",
           url: "#",
         },
       ],
     },
     {
-      title: "API Reference",
+      title: "Enrollments",
       url: "#",
       items: [
         {
-          title: "Components",
+          title: "Register",
           url: "#",
         },
         {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
+          title: "Participants",
           url: "#",
         },
       ],
     },
     {
-      title: "Architecture",
+      title: "Results and Announcements",
       url: "#",
       items: [
         {
-          title: "Accessibility",
+          title: "Announcements",
           url: "#",
         },
         {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      url: "#",
-      items: [
-        {
-          title: "Contribution Guide",
+          title: "Result",
           url: "#",
         },
       ],
     },
   ],
+};
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  onMenuItemClick: (title: string) => void;
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ onMenuItemClick, ...props }: AppSidebarProps) {
+  const [activeItem, setActiveItem] = React.useState<string | null>(null);
+
+  const handleItemClick = (title: string) => {
+    setActiveItem(title);
+    onMenuItemClick(title);
+  };
+
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -176,17 +96,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu className="gap-2">
             {data.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  isActive={activeItem === item.title}
+                  onClick={() => handleItemClick(item.title)}
+                >
                   <a href={item.url} className="font-medium">
                     {item.title}
                   </a>
                 </SidebarMenuButton>
                 {item.items?.length ? (
                   <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
-                    {item.items.map((item) => (
-                      <SidebarMenuSubItem key={item.title}>
-                        <SidebarMenuSubButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
+                    {item.items.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={activeItem === subItem.title}
+                          onClick={() => handleItemClick(subItem.title)}
+                        >
+                          <a href={subItem.url}>{subItem.title}</a>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
@@ -198,5 +126,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
