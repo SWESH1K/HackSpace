@@ -6,6 +6,14 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import {Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage} from "@/components/ui/breadcrumb"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { DateRange } from "react-day-picker";
+import { ClockIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import EventStatus from '@/components/EventStatus';
+import PrizeMoney from '@/components/PriceMoney';
+
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -45,16 +53,123 @@ const SingleEventPage = () => {
         return <div>Event not found</div>;
     }
 
-    const renderContent = () => {
+    const renderDiv1Content = () => {
         switch (activeContent) {
             case "Overview":
                 return (
-                    <div>
-                        <div>Event: {event.title}</div>
-                        <div>Description: {event.description}</div>
-                        <div>Price Money: ₹{event.price_money}</div>
-                        <div>Start Time: {new Date(event.start_time).toLocaleString()}</div>
-                    </div>
+                    <Card className="dark:bg-neutral-900 h-full w-full">
+                        <CardContent className="h-full flex flex-col justify-center items-center">
+                            <CardTitle className='text-center text-3xl mb-2'>Price Money</CardTitle>
+                            <hr className="w-full border-t-1 border-gray-600 dark:border-gray-400 my-4" />
+                            <PrizeMoney amount={event.price_money} />
+                        </CardContent>
+                    </Card>
+                );
+            case "Problem Statements":
+                return <div>Problem Statements Content</div>;
+            case "Rules and Instructions":
+                return <div>Rules and Instructions Content</div>;
+            case "Register":
+                return <div>Register Content</div>;
+            case "Participants":
+                return <div>Participants Content</div>;
+            case "Announcements":
+                return <div>Announcements Content</div>;
+            case "Result":
+                return <div>Result Content</div>;
+            default:
+                return <div>Select a menu item to view content</div>;
+        }
+    };
+
+    const renderDiv2Content = () => {
+        if (!event) return null;
+      
+        const startDate = new Date(event.start_time);
+        const endDate = new Date(event.end_time);
+      
+        switch (activeContent) {
+          case "Overview":
+            return (
+                <Card className="dark:bg-neutral-900 h-full w-full">
+                    <CardContent className="h-full flex flex-col justify-center items-center">
+                        <CardTitle className='text-center text-3xl mb-2'>Hackathon Status</CardTitle>
+                        <hr className="w-full border-t-1 border-gray-600 dark:border-gray-400 my-4" />
+                        <EventStatus startDate={startDate} endDate={endDate} />
+                    </CardContent>
+                </Card>
+            );
+          case "Problem Statements":
+            return <div>Problem Statements Content</div>;
+          case "Rules and Instructions":
+            return <div>Rules and Instructions Content</div>;
+          case "Register":
+            return <div>Register Content</div>;
+          case "Participants":
+            return <div>Participants Content</div>;
+          case "Announcements":
+            return <div>Announcements Content</div>;
+          case "Result":
+            return <div>Result Content</div>;
+          default:
+            return <div>Select a menu item to view content</div>;
+        }
+      };
+
+      const renderDiv3Content = () => {
+        const startDate = new Date(event.start_time);
+        const endDate = new Date(event.end_time);
+        const range: DateRange = { from: startDate, to: endDate };
+    
+        switch (activeContent) {
+            case "Overview":
+                return (
+                    <Card className='dark:bg-neutral-900'>
+                        <CardContent>
+                            <div className="flex flex-col space-y-4 h-auto justify-center items-center">
+                                <div className="flex justify-center items-center h-auto">
+                                    <div className="w-full max-w-md h-auto">
+                                        <Calendar
+                                            selected={range}
+                                            defaultMonth={startDate}
+                                            fromMonth={startDate}
+                                            toMonth={startDate}
+                                            className="w-full h-full"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex items-center text-sm text-gray-500">
+                                    <span>{format(startDate, 'PP')}</span>
+                                    <ClockIcon className="ml-2 mr-1 w-4 h-4" />
+                                    <span>{format(startDate, 'p')}</span>
+                                    <span className='mx-2'>to</span>
+                                    <span>{format(endDate, 'PP')}</span>
+                                    <ClockIcon className=" ml-2 mr-1 w-4 h-4" />
+                                    <span>{format(endDate, 'p')}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                );
+            case "Problem Statements":
+                return <div>Problem Statements Content</div>;
+            case "Rules and Instructions":
+                return <div>Rules and Instructions Content</div>;
+            default:
+                return <div>Select a menu item to view content</div>;
+        }
+    };
+
+    const renderMainContent = () => {
+        switch (activeContent) {
+            case "Overview":
+                return (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{event.title}</CardTitle>
+                            <CardDescription>{event.description}</CardDescription>
+                        </CardHeader>
+                    </Card>
                 );
             case "Problem Statements":
                 return <div>Problem Statements Content</div>;
@@ -95,13 +210,13 @@ const SingleEventPage = () => {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4">
-                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                        <div className="aspect-video rounded-xl bg-muted/50" />
-                        <div className="aspect-video rounded-xl bg-muted/50" />
-                        <div className="aspect-video rounded-xl bg-muted/50" />
+                <div className="grid auto-rows-min gap-4 md:grid-cols-3 items-stretch">
+                        <div className="rounded-xl bg-muted/50 flex items-stretch">{renderDiv1Content()}</div>
+                        <div className="rounded-xl bg-muted/50 flex items-stretch">{renderDiv2Content()}</div>
+                        <div className="rounded-xl bg-muted/50 flex items-stretch justify-center py-3">{renderDiv3Content()}</div>
                     </div>
                     <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-                        {renderContent()}
+                        {renderMainContent()}
                     </div>
                 </div>
             </SidebarInset>
