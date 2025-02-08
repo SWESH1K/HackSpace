@@ -3,9 +3,9 @@ import Event from "../models/event.model.js"
 export const createEvent = async (req, res) => {
 
     // Ensure the user is authenticated and has a valid user ID
-    if (!req.oidc || !req.oidc.user || !req.oidc.user.sub) {
-        return res.status(401).json({ success: false, message: "User not authenticated" });
-    }
+    // if (!req.oidc || !req.oidc.user || !req.oidc.user.sub) {
+    //     return res.status(401).json({ success: false, message: "User not authenticated" });
+    // }
 
     // console.log(`User: ${req.oidc.user.sub}`)
 
