@@ -10,7 +10,7 @@ export interface Event {
   start_time: Date;
   end_time: Date;
   num_rounds: number;
-  organiser: string;
+  admin: string;
   rounds: Round[];
   createdAt: Date;
   updatedAt: Date;

@@ -8,18 +8,24 @@
     6, Max Team Size - Number 
     7, Max Teams - Number 
     8, Participants Teams - Array of Teams Model Objects
-    9, Organiser - Auto Field
+    9, Admin - Auto Field
     10, Last Updated - Auto Field
 
     Rounds Model:
     1, Round Name - String
     2, Round Time - Date & Time Field
     3, Max Marks - Number
+    4, Evaluation Pattern - Object of Evaluation Pattern Model
+
+    Evaluation Pattern Model:
+    1, Pattern - [{Name: MaxMarks}]
 
     Team Model:
     1, Team Name - String
-    2, Team Members - Array of Users
-    3, Team Marks - Array of length=Num of Rounds
+    2, Team Password - String
+    4, Team Lead - Auto Field
+    5, Team Members - Array of Users
+    6, Team Marks - Array of length=Num of Rounds
 */
 
 import mongoose from "mongoose";
@@ -89,7 +95,7 @@ const EventSchema = new mongoose.Schema({
         ],
         unique: false
     },
-    organiser: {
+    admin: {
         type: String,
         required: true
     }

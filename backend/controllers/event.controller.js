@@ -11,7 +11,7 @@ export const createEvent = async (req, res) => {
 
     const event = new Event({
         ...req.body,
-        organiser: req.body.organiser || req.oidc.user.sub // Assuming the user ID is available in req.oidc.user.sub
+        admin: req.body.admin || req.oidc.user.sub // Assuming the user ID is available in req.oidc.user.sub
     });
 
     // const event = new Event(req.body)
@@ -62,7 +62,7 @@ export const getEvent = async(req, res) => {
 export const getMyEvents = async(req, res) => {
     try {
         const userId = req.oidc.user.sub;
-        const events = await Event.find({ organiser: userId });
+        const events = await Event.find({ admin: userId });
         res.status(200).json({ success: true, data: events });
     } catch (error) {
         res.status(500).json({ success: false, message: `Server Error: ${error}` });
