@@ -7,6 +7,16 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import {Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage} from "@/components/ui/breadcrumb"
 import ReactMarkdown from 'react-markdown';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {format} from "date-fns";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"  
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -47,6 +57,8 @@ const SingleEventPage = () => {
         return <div>Event not found</div>;
     }
 
+    console.log(event.problem_statements)
+
     const renderMainContent = () => {
         switch (activeContent) {
             case "Overview":
@@ -76,7 +88,44 @@ const SingleEventPage = () => {
             case "Problem-Statements":
                 return <div>Problem Statements</div>;
             case "Rounds-Evaluation":
-                return <div>Rounds Evaluation</div>;
+                return (
+                    <div>
+                        {event.rounds.map((round, index) => (
+                            <Card key={index} className="mb-4">
+                                <CardHeader>
+                                    <div className='flex justify-between'>
+                                        <h3 className="text-lg font-semibold">{round.name}</h3>
+                                        <h3>{round.max_marks} Marks</h3>
+                                    </div>
+                                    <div className='text-sm text-gray-500'>
+                                        {format(new Date(round.time), 'PPp')}
+                                    </div>
+                                </CardHeader>
+                                <Separator />
+                                <CardContent>
+                                        <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                            <TableHead className="w-[30px]">S.No</TableHead>
+                                            <TableHead className="w-[200px]">Category</TableHead>
+                                            <TableHead className='text-right'>Max Marks</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                        {round.evaluation_pattern.pattern.map((pattern, patternIndex) => (
+                                            <TableRow>
+                                                <TableCell className='text-center'>{patternIndex+1}</TableCell>
+                                                <TableCell className="font-medium">{pattern.name}</TableCell>
+                                                <TableCell className="text-right">{pattern.max_marks}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                        </TableBody>
+                                        </Table>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                );
             default:
                 return <div>Select a menu item to view content</div>;
         }
