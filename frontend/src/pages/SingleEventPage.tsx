@@ -8,6 +8,14 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import {Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage} from "@/components/ui/breadcrumb"
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {format} from "date-fns";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"  
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -92,14 +100,24 @@ const SingleEventPage = () => {
                                 </CardHeader>
                                 <Separator />
                                 <CardContent>
-                                    <ul>
+                                        <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                            <TableHead className="w-[30px]">S.No</TableHead>
+                                            <TableHead className="w-[200px]">Category</TableHead>
+                                            <TableHead className='text-right'>Max Marks</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
                                         {round.evaluation_pattern.pattern.map((pattern, patternIndex) => (
-                                            <li key={patternIndex} className="flex justify-between py-2">
-                                                <span>{pattern.name}</span>
-                                                <span>{pattern.max_marks} marks</span>
-                                            </li>
+                                            <TableRow>
+                                                <TableCell className='text-center'>{patternIndex+1}</TableCell>
+                                                <TableCell className="font-medium">{pattern.name}</TableCell>
+                                                <TableCell className="text-right">{pattern.max_marks}</TableCell>
+                                            </TableRow>
                                         ))}
-                                    </ul>
+                                        </TableBody>
+                                        </Table>
                                 </CardContent>
                             </Card>
                         ))}
