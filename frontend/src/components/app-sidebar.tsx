@@ -61,6 +61,20 @@ const data = {
         },
       ],
     },
+    {
+      title: "Admin Panel",
+      url: "#",
+      items: [
+        {
+          title: "Problem-Statements",
+          url: "#",
+        },
+        {
+          title: "Rounds-Evaluation",
+          url: "#",
+        },
+      ],
+    },
   ],
 };
 
