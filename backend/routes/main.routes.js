@@ -1,5 +1,6 @@
 import express from "express";
 import eventRouter from "./event.routes.js";
+import eventDetailsRouter from "./eventDetails.routes.js";
 import axios from "axios";
 import getAuth0ManagementApiToken from "../utils/getAuth0ManagementApiToken.js";
 
@@ -27,5 +28,6 @@ router.get('/api/user/:id', async (req, res) => {
 });
 
 router.use("/api/event", eventRouter);
+router.use("/api/event-details", eventDetailsRouter);
 
 export default router;

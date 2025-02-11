@@ -34,67 +34,9 @@
 */
 
 import mongoose from "mongoose";
-
-const EvaluationPatternSchema = new mongoose.Schema({
-    pattern: [{
-        name: {
-            type: String,
-            required: true
-        },
-        max_marks: {
-            type: Number,
-            required: true
-        }
-    }],
-}, {timestamps: true});
-
-const RoundSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    time: {
-        type: Date,
-        required: true
-    },
-    evaluation_pattern: {
-        type: EvaluationPatternSchema,
-        required: true
-    },
-    max_marks: {
-        type: Number,
-        required: true,
-        default: function() {
-            return this.evaluation_pattern.pattern.reduce((sum, item) => sum + item.max_marks, 0);
-        }
-    },
-}, {timestamps: true});
-
-const TeamSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    lead: {
-        type: String,
-        ref: 'Lead',
-        required: true,
-    },
-    members: [{
-        type: String,
-        ref: 'Member',
-        required: true,
-        default: []
-    }],
-    marks: [{
-        type: Number,
-        default: 0
-    }],
-}, {timestamps: true});
+import TeamSchema from "./team.model.js";
+import RoundSchema from "./rounds.model.js";
+import EventDetailsSchema from "./event_details.model.js";
 
 const EventSchema = new mongoose.Schema({
     title: {
@@ -102,6 +44,10 @@ const EventSchema = new mongoose.Schema({
         required: true
     },
     banner_url: {
+        type: String,
+        required: true
+    },
+    description: {
         type: String,
         required: true
     },
@@ -144,7 +90,7 @@ const EventSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-                return v.length <= this.maxTeams;
+                return v.length <= this.max_teams;
             },
             message: props => `Number of participant teams (${props.value.length}) exceeds the maximum allowed (${this.maxTeams})`
         },
@@ -159,19 +105,7 @@ const EventSchema = new mongoose.Schema({
         type: String,
         ref: 'Judges',
         default: []
-    }],
-    overview: {
-        type: String, // Markdown content
-        default: ""
-    },
-    problem_statements: {
-        type: String, // Markdown content
-        default: ""
-    },
-    rules_and_regulations: {
-        type: String, // Markdown content
-        default: ""
-    }
+    }]
 }, {
     timestamps: true
 });

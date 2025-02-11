@@ -30,7 +30,7 @@ const CreateEventPage = () => {
     const event = {
       title,
       banner_url: bannerUrl,
-      description,
+      description: description,
       price_money: priceMoney,
       start_time: dateRange?.from ? new Date(`${dateRange.from.toDateString()} ${startTime}`) : null,
       end_time: dateRange?.to ? new Date(`${dateRange.to.toDateString()} ${endTime}`) : null,

@@ -1,4 +1,5 @@
 import Event from "../models/event.model.js"
+import EventDetails from "../models/event_details.model.js"
 
 export const createEvent = async (req, res) => {
 
@@ -45,19 +46,34 @@ export const getEvents = async(req, res) => {
     }
 }
 
-export const getEvent = async(req, res) => {
-    const id = req.params.id
-
+export const getEvent = async (req, res) => {
     try {
-        const event = await Event.find({_id: id})
+        const { id } = req.params;
+        const event = await Event.findById(id);
+
         if (!event) {
-            res.status(404).json({success: false, message: `Event with id ${id} not found`})
+            return res.status(404).json({ success: false, message: `Event with id ${id} not found` });
         }
-        res.status(200).json({success: true, data: event})
-    } catch(error) {
-        res.status(500).json({success: false, message: `Error: ${error}`})
+
+        // Fetch event details
+        const eventDetails = await EventDetails.findOne({ event: id });
+
+        if (!eventDetails) {
+            return res.status(404).json({ success: false, message: `Event details not found for event with id ${id}` });
+        }
+
+        // Combine event and event details data
+        const eventData = {
+            ...event.toObject(),
+            problem_statements: eventDetails.problem_statements,
+            rules_and_regulations: eventDetails.rules_and_regulations
+        };
+
+        res.status(200).json({ success: true, data: [eventData] }); // Wrap in array to match existing structure
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Server Error: ${error}` });
     }
-}
+};
 
 export const getMyEvents = async(req, res) => {
     try {
