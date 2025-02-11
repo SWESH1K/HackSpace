@@ -6,6 +6,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import {Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage} from "@/components/ui/breadcrumb"
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {format} from "date-fns";
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -45,12 +47,23 @@ const SingleEventPage = () => {
         return <div>Event not found</div>;
     }
 
+    console.log(event.problem_statements)
+
     const renderMainContent = () => {
         switch (activeContent) {
             case "Overview":
                 return <div>Overview</div>
             case "Problem Statements":
-                return <div>Problem Statements Content</div>;
+                return (
+                    <div>
+                        <h2>Problem Statements</h2>
+                        <ul>
+                            {event.problem_statements.map((statement, index) => (
+                                <li key={index}>{statement}</li>
+                            ))}
+                        </ul>
+                    </div>
+                );
             case "Rules and Instructions":
                 return <div>Rules and Instructions Content</div>;
             case "Register":
@@ -64,7 +77,34 @@ const SingleEventPage = () => {
             case "Problem-Statements":
                 return <div>Problem Statements</div>;
             case "Rounds-Evaluation":
-                return <div>Rounds Evaluation</div>;
+                return (
+                    <div>
+                        {event.rounds.map((round, index) => (
+                            <Card key={index} className="mb-4">
+                                <CardHeader>
+                                    <div className='flex justify-between'>
+                                        <h3 className="text-lg font-semibold">{round.name}</h3>
+                                        <h3>{round.max_marks} Marks</h3>
+                                    </div>
+                                    <div className='text-sm text-gray-500'>
+                                        {format(new Date(round.time), 'PPp')}
+                                    </div>
+                                </CardHeader>
+                                <Separator />
+                                <CardContent>
+                                    <ul>
+                                        {round.evaluation_pattern.pattern.map((pattern, patternIndex) => (
+                                            <li key={patternIndex} className="flex justify-between py-2">
+                                                <span>{pattern.name}</span>
+                                                <span>{pattern.max_marks} marks</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                );
             default:
                 return <div>Select a menu item to view content</div>;
         }

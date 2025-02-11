@@ -12,14 +12,25 @@ export interface Event {
   num_rounds: number;
   admin: string;
   rounds: Round[];
+  problem_statements: [String],
   createdAt: Date;
   updatedAt: Date;
 }
 
 interface Round {
-  number: number;
-  name: string;
-  max_marks: number;
+  name: String;
+  time: Date;
+  evaluation_pattern: EvaluationPattern;
+  max_marks: number
+}
+
+interface EvaluationPattern {
+  pattern: [
+    {
+      name: String;
+      max_marks: number;
+    }
+  ]
 }
 
 export function useEvents() {
