@@ -13,6 +13,7 @@ import { ClockIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import EventStatus from '@/components/EventStatus';
 import PrizeMoney from '@/components/PriceMoney';
+import ReactMarkdown from 'react-markdown';
 
 
 const SingleEventPage = () => {
@@ -163,28 +164,48 @@ const SingleEventPage = () => {
     const renderMainContent = () => {
         switch (activeContent) {
             case "Overview":
-                return (
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{event.title}</CardTitle>
-                            <CardDescription>{event.description}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                );
-            case "Problem Statements":
-                return <div>Problem Statements Content</div>;
-            case "Rules and Instructions":
-                return <div>Rules and Instructions Content</div>;
-            case "Register":
-                return <div>Register Content</div>;
-            case "Participants":
-                return <div>Participants Content</div>;
-            case "Announcements":
-                return <div>Announcements Content</div>;
-            case "Result":
-                return <div>Result Content</div>;
-            default:
-                return <div>Select a menu item to view content</div>;
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>{event.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <ReactMarkdown>{event.overview}</ReactMarkdown>
+            </CardContent>
+        </Card>
+    );
+    case "Problem Statements":
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Problem Statements</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ReactMarkdown>{event.problem_statements}</ReactMarkdown>
+                </CardContent>
+            </Card>
+        );
+    case "Rules and Instructions":
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Rules and Instructions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ReactMarkdown>{event.rules_and_regulations}</ReactMarkdown>
+                </CardContent>
+            </Card>
+        );
+        case "Register":
+            return <div>Register Content</div>;
+        case "Participants":
+            return <div>Participants Content</div>;
+        case "Announcements":
+            return <div>Announcements Content</div>;
+        case "Result":
+            return <div>Result Content</div>;
+        default:
+            return <div>Select a menu item to view content</div>;
         }
     };
 

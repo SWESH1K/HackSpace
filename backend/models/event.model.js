@@ -117,11 +117,6 @@ const EventSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    problem_statements: [{
-        type: String,
-        required: true,
-        default: []
-    }],
     num_rounds: {
         type: Number,
         required: true
@@ -165,6 +160,18 @@ const EventSchema = new mongoose.Schema({
         ref: 'Judges',
         default: []
     }],
+    overview: {
+        type: String, // Markdown content
+        default: ""
+    },
+    problem_statements: {
+        type: String, // Markdown content
+        default: ""
+    },
+    rules_and_regulations: {
+        type: String, // Markdown content
+        default: ""
+    }
 }, {
     timestamps: true
 });

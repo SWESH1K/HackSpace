@@ -9,10 +9,9 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
     return (
         <div className="mt-4 text-2xl font-bold space-y-4">
             <div className="flex items-center">
-                <span className='mr-8 text-gray-700 dark:text-gray-300'>First Price:</span><span className='text-gray-600 dark:text-gray-400'>₹</span>
+                <span className='mr-12'>First Price:</span><span>₹</span>
                 <AnimatedNumbers
                     includeComma
-                    className='text-gray-600 dark:text-gray-400'
                     transitions={(index) => ({
                         type: "spring",
                         duration: index + 0.01,
@@ -22,10 +21,10 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
                 />
             </div>
             <div className="flex items-stretch w-full">
-                <span className='mr-2'>Second Price:</span><span className='text-gray-600 dark:text-gray-400'>₹</span>
+                <span className='mr-3 dark:text-gray-300'>Second Price:</span><span className='dark:text-gray-300'>₹</span>
                 <AnimatedNumbers
                     includeComma
-                    className='text-gray-600 dark:text-gray-400'
+                    className='dark:text-gray-300'
                     transitions={(index) => ({
                         type: "spring",
                         duration: index + 0.01,
@@ -35,10 +34,10 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
                 />
             </div>
             <div className="flex items-center">
-                <span className='mr-8'>Third Price:</span><span className='text-gray-600 dark:text-gray-400'>₹</span>
+                <span className='mr-10 dark:text-gray-400'>Third Price:</span><span className=' dark:text-gray-400'>₹</span>
                 <AnimatedNumbers
                     includeComma
-                    className='text-gray-600 dark:text-gray-400'
+                    className=' dark:text-gray-400'
                     transitions={(index) => ({
                         type: "spring",
                         duration: index + 0.01,

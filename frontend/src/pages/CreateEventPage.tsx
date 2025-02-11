@@ -68,7 +68,7 @@ const CreateEventPage = () => {
       // Show error toast with generic message
       toast({
         title: 'Error',
-        description: 'An unexpected error occurred',
+        description: `Failed to create event: ${error}`,
       });
     }
   };
