@@ -25,14 +25,19 @@ export const createEvent = async (req, res) => {
 
         const newEvent = new Event(event)
         await newEvent.save()
+
+        const eventDetails = new EventDetails({
+            event: newEvent._id,
+            problem_statements: "No problem statements available.",
+            rules_and_regulations: "No rules and instructions available."
+        });
+        await eventDetails.save();
+
         res.status(201).json({success: true, data: newEvent})
     } catch(error) {
 
-        if(error.name == "ValidationError") {
-            res.status(400).json({success: false, message: error.message})
-        }
-
-        res.status(500).json({success: false, message: `Server Error: ${error}`})
+        if(error.name == "ValidationError") res.status(400).json({success: false, message: error.message})
+        else res.status(500).json({success: false, message: `Server Error: ${error}`})
     }
 }
 
@@ -57,10 +62,6 @@ export const getEvent = async (req, res) => {
 
         // Fetch event details
         const eventDetails = await EventDetails.findOne({ event: id });
-
-        if (!eventDetails) {
-            return res.status(404).json({ success: false, message: `Event details not found for event with id ${id}` });
-        }
 
         // Combine event and event details data
         const eventData = {

@@ -17,6 +17,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"  
+import styles from "../SingleEventPage.module.css"
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -31,12 +32,11 @@ const SingleEventPage = () => {
                 const url = `/api/event/${id}`;
                 const response = await fetch(url);
                 const data = await response.json();
-                console.log(data.data[0]);
+                console.log(data);
                 if (data.success) {
                     setEvent(data.data[0]);
-                } else {
-                    setError(data.message);
                 }
+                console.log(data);
             } catch (e) {
                 console.log(`Error: ${e}`);
                 setError('Failed to fetch event');
@@ -57,22 +57,20 @@ const SingleEventPage = () => {
         return <div>Event not found</div>;
     }
 
-    console.log(event.problem_statements)
-
     const renderMainContent = () => {
         switch (activeContent) {
             case "Overview":
                 return <div>Overview</div>
             case "Problem Statements":
                 return (
-                    <div>
+                    <div className={styles.markdown}>
                         <h3>Problem Statements</h3>
                         <ReactMarkdown>{event.problem_statements}</ReactMarkdown>
                     </div>
                 );
             case "Rules and Instructions":
                 return(
-                    <div>
+                    <div className={styles.markdown}>
                         <h3>Rules and Instructions</h3>
                         <ReactMarkdown>{event.rules_and_regulations}</ReactMarkdown>
                     </div>
