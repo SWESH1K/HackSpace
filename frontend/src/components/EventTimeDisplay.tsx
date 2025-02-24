@@ -10,11 +10,11 @@ const EventTimeDisplay: React.FC<EventTimeDisplayProps> = ({ startDate, endDate 
   return (
     <div className="flex flex-col space-y-4 justify-center items-center">
       <div className="flex space-x-4 items-center">
-        <ClockIcon className="w-12 h-12 text-gray-500" />
-        <span className="text-2xl">{format(startDate, 'PPpp')}</span>
-        <span className="text-2xl">to</span>
-        <ClockIcon className="w-12 h-12 text-gray-500" />
-        <span className="text-2xl">{format(endDate, 'PPpp')}</span>
+        <ClockIcon className="w-6 h-6 text-gray-500" />
+        <span className="font-bold">{format(startDate, 'PPp')}</span>
+        <span className="">to</span>
+        <ClockIcon className="w-6 h-6 text-gray-500" />
+        <span className="font-bold">{format(endDate, 'PPp')}</span>
       </div>
     </div>
   );
