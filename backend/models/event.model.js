@@ -69,12 +69,12 @@ const EventSchema = new mongoose.Schema({
     },
     rounds: {
         type: [RoundSchema],
-        validate: {
-            validator: function(v) {
-                return v.length === this.num_rounds;
-            },
-            message: props => `Number of rounds (${props.value.length}) does not match num_rounds (${this.num_rounds})`
-        }
+        // validate: {
+        //     validator: function(v) {
+        //         return v.length === this.num_rounds;
+        //     },
+        //     message: props => `Number of rounds (${props.value.length}) does not match num_rounds (${this.num_rounds})`
+        // }
     },
     max_team_size: {
         type: Number,

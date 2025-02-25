@@ -10,7 +10,7 @@ router.get("/my", getMyEvents)
 router.get("/:id", getEvent)
 router.delete("/", deleteAllEvents)
 router.delete("/:id", deleteEvent)
-router.put("/:id/updateEvent", updateEvent)
+router.put("/updateEvent/:id", updateEvent)
 
 // Forward to the rounds router.
 router.use("/:id/rounds/", roundsRouter)
