@@ -1,11 +1,13 @@
-import React from 'react';
-import AnimatedNumbers from 'react-animated-numbers';
+import { useSpring, animated } from '@react-spring/web';
 
 interface PrizeMoneyProps {
     amount: number;
 }
 
 const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
+    const firstPrizeProps = useSpring({ number: amount, from: { number: 0 }, config: { duration: 2000 }});
+    const secondPrizeProps = useSpring({ number: amount / 2, from: { number: 0 }, config: { duration: 2000 }});
+
     return (
         <div className="mt-4 text-2xl font-bold flex justify-around items-center space-x-8">
             <div className="flex flex-col items-center">
@@ -13,15 +15,7 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
                 <span>First Prize:</span>
                 <div className="flex items-center">
                     <span>₹</span>
-                    <AnimatedNumbers
-                        includeComma
-                        transitions={(index) => ({
-                            type: "spring",
-                            duration: index + 0.01,
-                        })}
-                        animateToNumber={amount}
-                        fontStyle={{ fontSize: 32 }}
-                    />
+                    <animated.span>{firstPrizeProps.number.to(n => n.toFixed(0))}</animated.span>
                 </div>
             </div>
             <div className="flex flex-col items-center">
@@ -29,15 +23,7 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
                 <span>Second Prize:</span>
                 <div className="flex items-center">
                     <span>₹</span>
-                    <AnimatedNumbers
-                        includeComma
-                        transitions={(index) => ({
-                            type: "spring",
-                            duration: index + 0.01,
-                        })}
-                        animateToNumber={amount / 2}
-                        fontStyle={{ fontSize: 32 }}
-                    />
+                    <animated.span>{secondPrizeProps.number.to(n => n.toFixed(0))}</animated.span>
                 </div>
             </div>
             <div className="flex flex-col items-center">
@@ -45,15 +31,7 @@ const PrizeMoney: React.FC<PrizeMoneyProps> = ({ amount }) => {
                 <span>Third Prize:</span>
                 <div className="flex items-center">
                     <span>₹</span>
-                    <AnimatedNumbers
-                        includeComma
-                        transitions={(index) => ({
-                            type: "spring",
-                            duration: index + 0.01,
-                        })}
-                        animateToNumber={amount / 4}
-                        fontStyle={{ fontSize: 32 }}
-                    />
+                    <animated.span>{secondPrizeProps.number.to(n => (n / 2).toFixed(0))}</animated.span>
                 </div>
             </div>
         </div>
