@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import {Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage} from "@/components/ui/breadcrumb"
 
 import Overview from './Overview';
+import AdminProblemStatements from './AdminProblemStatements';
 import ProblemStatements from './ProblemStatements';
 import RulesRegulations from './RulesRegulations';
 import RoundEvaluation from './RoundEvaluation';
@@ -69,6 +70,8 @@ const SingleEventPage = () => {
                 return <Announcements />;
             case "Result":
                 return <ResultPage />;
+            case "Problem-Statements":
+                return <AdminProblemStatements />
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
             default:
