@@ -1,11 +1,13 @@
-import EditorContent from "../components/Editor";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+// import EditorContent from "../components/Editor";
 
 const AdminProblemStatements = () => {
   return (
-    <div>
-      Admin Problem Statements
-      <EditorContent />
-    </div>
+    <>
+      <div>
+        <SimpleEditor />
+      </div>
+    </>
   )
 };
 
