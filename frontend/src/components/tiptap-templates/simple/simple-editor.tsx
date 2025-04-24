@@ -13,6 +13,19 @@ import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { Underline } from "@tiptap/extension-underline"
 
+// --- Alert Dialog ---
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "../../ui/alert-dialog";
+
 // --- Custom Extensions ---
 import { Link } from "@/components/tiptap-extension/link-extension"
 import { Selection } from "@/components/tiptap-extension/selection-extension"
@@ -71,7 +84,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
+// import content from "@/components/tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -174,8 +187,9 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor({ onSave, defaultContent }: { onSave: (content: object) => void; defaultContent: object; }) {
   const isMobile = useMobile()
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const windowSize = useWindowSize()
   const [mobileView, setMobileView] = React.useState<
     "main" | "highlighter" | "link"
@@ -189,6 +203,13 @@ export function SimpleEditor() {
     height: 0,
   })
   const toolbarRef = React.useRef<HTMLDivElement>(null)
+
+  const handleSave = () => {
+    if (editor) {
+      const content = editor.getJSON()
+      onSave(content)
+    }
+  }
 
   React.useEffect(() => {
     const updateRect = () => {
@@ -241,7 +262,7 @@ export function SimpleEditor() {
       TrailingNode,
       Link.configure({ openOnClick: false }),
     ],
-    content: content,
+    content: defaultContent,
   })
 
   React.useEffect(() => {
@@ -307,6 +328,25 @@ export function SimpleEditor() {
             onBack={() => setMobileView("main")}
           />
         )}
+        <div className="toolbar">
+          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <AlertDialogTrigger asChild>
+              <Button>Save</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Save</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to save your changes?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleSave}>Confirm</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </Toolbar>
 
       <div className="content-wrapper">

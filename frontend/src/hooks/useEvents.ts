@@ -12,8 +12,8 @@ export interface Event {
   num_rounds: number;
   admin: string;
   rounds: Round[];
-  problem_statements: string,
-  rules_and_regulations: string,
+  problem_statements: object,
+  rules_and_regulations: object,
   createdAt: Date;
   updatedAt: Date;
 }
