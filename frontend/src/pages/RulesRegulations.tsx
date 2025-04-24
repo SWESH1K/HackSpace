@@ -12,6 +12,7 @@ interface RulesRegulationsProps {
 }
 
 const RulesRegulations = ({ event }: RulesRegulationsProps) => {
+  console.log(event.rules_and_regulations)
   return (
     <div className={styles.markdown}>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
