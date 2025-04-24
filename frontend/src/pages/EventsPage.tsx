@@ -3,6 +3,7 @@ import CardDemo from "../components/event-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 import {  Plus } from "lucide-react";
+import NavBar from "@/components/NavBar";
 
 
 const EventPage = () => {
@@ -17,6 +18,8 @@ const EventPage = () => {
   }
 
   return (
+    <>
+    <NavBar />
     <Tabs defaultValue="all" className=" overflow-x-hidden mb-3 pt-[5%]">
       <TabsList>
         <TabsTrigger value="all">All</TabsTrigger>
@@ -52,6 +55,7 @@ const EventPage = () => {
         </div>
       </TabsContent>
     </Tabs>
+    </>
   );
 };
 

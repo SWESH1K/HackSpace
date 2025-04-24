@@ -1,4 +1,4 @@
-import NavBar from './components/NavBar';
+// import NavBar from './components/NavBar';
 import Footer from './components/footer';
 import HomePage from './pages/HomePage';
 import EventPage from './pages/EventsPage';
@@ -10,7 +10,6 @@ import SingleEventPage from './pages/SingleEventPage';
 function Home() {
   return (
     <div className="min-h-screen">
-      <NavBar />
       <Routes>
         <Route path="/events" element={<EventPage />}></Route>
         <Route path="/events/:id" element={<SingleEventPage />}></Route>

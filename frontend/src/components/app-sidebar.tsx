@@ -95,7 +95,7 @@ export function AppSidebar({ onMenuItemClick, ...props }: AppSidebarProps) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="text-xl md:text-3xl font-bold">
+            <div className="text-xl md:text-3xl font-bold ml-5">
               <a href="/">HackSpace</a>
             </div>
           </SidebarMenuItem>
