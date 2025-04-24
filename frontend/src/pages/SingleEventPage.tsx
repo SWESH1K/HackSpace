@@ -71,7 +71,7 @@ const SingleEventPage = () => {
             case "Result":
                 return <ResultPage />;
             case "Problem-Statements":
-                return <AdminProblemStatements />
+                return <AdminProblemStatements event={event} />
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
             default:

@@ -4,7 +4,7 @@ import styles from "../SingleEventPage.module.css";
 
 // Define the props interface with consistent types
 interface EventProps {
-  rules_and_regulations: string;
+  rules_and_regulations: object;
 }
 
 interface RulesRegulationsProps {
@@ -12,10 +12,12 @@ interface RulesRegulationsProps {
 }
 
 const RulesRegulations = ({ event }: RulesRegulationsProps) => {
+  console.log(event.rules_and_regulations)
   return (
     <div className={styles.markdown}>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {event.rules_and_regulations}
+        {/* {event.rules_and_regulations} */}
+        Rules and regulations.
       </ReactMarkdown>
     </div>
   );

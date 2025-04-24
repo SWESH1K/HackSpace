@@ -8,12 +8,20 @@ const EventDetailsSchema = new mongoose.Schema({
         unique: true // Ensures only one EventDetails document per event
     },
     problem_statements: {
-        type: String, // Markdown content
-        default: ""
+        type: Object, // JSON structure for rich text content
+        required: true,
+        default: {
+            type: "doc",
+            content: []
+        }
     },
     rules_and_regulations: {
-        type: String, // Markdown content
-        default: ""
+        type: Object, // JSON structure for rich text content
+        required: true,
+        default: {
+            type: "doc",
+            content: []
+        }
     }
 }, {
     timestamps: true
