@@ -1,8 +1,16 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import styles from "../SingleEventPage.module.css";
-
-// Define the props interface with consistent types
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import Highlight from "@tiptap/extension-highlight";
+import Image from "@tiptap/extension-image";
+import Typography from "@tiptap/extension-typography";
+import Superscript from "@tiptap/extension-superscript";
+import Subscript from "@tiptap/extension-subscript";
+import Link from "@tiptap/extension-link";
+import { TrailingNode } from "@/components/tiptap-extension/trailing-node-extension"
 interface EventProps {
   rules_and_regulations: object;
 }
@@ -12,13 +20,32 @@ interface RulesRegulationsProps {
 }
 
 const RulesRegulations = ({ event }: RulesRegulationsProps) => {
-  console.log(event.rules_and_regulations)
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Underline,
+      TaskList,
+      TaskItem.configure({ nested: true }),
+      Highlight.configure({ multicolor: true }),
+      Image,
+      Typography,
+      Superscript,
+      Subscript,
+      TrailingNode,
+      Link.configure({ openOnClick: false }),
+    ],
+    content: event.rules_and_regulations, // Pass the JSON content here
+    editable: false, // Make it read-only
+  });
+
+  if (!editor) {
+    return null; // Render nothing until the editor is initialized
+  }
+
   return (
-    <div className={styles.markdown}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {/* {event.rules_and_regulations} */}
-        Rules and regulations.
-      </ReactMarkdown>
+    <div className="markdown px-[20%] py-10">
+      <EditorContent editor={editor} />
     </div>
   );
 };

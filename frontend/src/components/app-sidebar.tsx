@@ -40,6 +40,10 @@ export function AppSidebar({ onMenuItemClick, userId, hackathonAdminId,...props 
             title: "Rules and Instructions",
             url: "#",
           },
+          {
+            title: "Rounds-Evaluation",
+            url: "#",
+          },
         ],
       },
       {
@@ -81,7 +85,7 @@ export function AppSidebar({ onMenuItemClick, userId, hackathonAdminId,...props 
                   url: "#",
                 },
                 {
-                  title: "Rounds-Evaluation",
+                  title: "Rules-and-Instructions",
                   url: "#",
                 },
               ],

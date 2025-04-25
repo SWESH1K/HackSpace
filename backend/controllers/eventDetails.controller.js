@@ -101,3 +101,28 @@ export const updateProblemStatement = async (req, res) => {
         res.status(500).json({ success: false, message: `Server Error: ${error}` });
     }
 };
+
+export const updateRulesRegulations = async (req, res) => {
+    try {
+        const { id: eventId } = req.params;
+        const { rules_and_regulations } = req.body;
+
+        if (!rules_and_regulations) {
+            return res.status(400).json({ success: false, message: "Rules and Regulations is required" });
+        }
+
+        const updatedEventDetails = await EventDetails.findOneAndUpdate(
+            { event: eventId },
+            { rules_and_regulations },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedEventDetails) {
+            return res.status(404).json({ success: false, message: `Event details not found for event with id ${eventId}` });
+        }
+
+        res.status(200).json({ success: true, data: updatedEventDetails });
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Server Error: ${error}` });
+    }
+};

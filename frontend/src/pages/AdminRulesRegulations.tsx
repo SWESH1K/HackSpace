@@ -3,31 +3,31 @@ import { useState } from "react";
 import { Event } from "@/hooks/useEvents";
 import { useToast } from "@/hooks/use-toast";
 
-interface AdminProblemStatementsProps {
+interface AdminRulesRegulationsProps {
   event: Event;
 }
 
-const AdminProblemStatements = ({ event }: AdminProblemStatementsProps) => {
+const AdminRulesRegulations = ({ event }: AdminRulesRegulationsProps) => {
   const [localEvent, setLocalEvent] = useState<Event>(event);
   const { toast } = useToast();
 
   const handleSave = async (content: object) => {
     setLocalEvent((prevEvent) => ({
       ...prevEvent,
-      problem_statements: content,
+      rules_and_regulations: content,
     }));
 
     try {
-      const response = await fetch(`/api/event-details/${localEvent._id}/problem-statement`, {
+      const response = await fetch(`/api/event-details/${localEvent._id}/rules-regulations`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ problem_statements: content }),
+        body: JSON.stringify({ rules_and_regulations: content }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to save problem statements: ${response.statusText}`);
+        throw new Error(`Failed to save rules and regulations: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -36,15 +36,15 @@ const AdminProblemStatements = ({ event }: AdminProblemStatementsProps) => {
       // Show success toast
       toast({
         title: "Success",
-        description: "Problem statements saved successfully.",
+        description: "Rules and regulations saved successfully.",
       });
     } catch (error) {
-      console.error("Error saving problem statements:", error);
+      console.error("Error saving rules and regulations:", error);
 
       // Show error toast
       toast({
         title: "Error",
-        description: "Failed to save problem statements.",
+        description: "Failed to save rules and regulations.",
         variant: "destructive",
       });
     }
@@ -53,10 +53,10 @@ const AdminProblemStatements = ({ event }: AdminProblemStatementsProps) => {
   return (
     <>
       <div>
-        <SimpleEditor onSave={handleSave} defaultContent={event.problem_statements} />
+        <SimpleEditor onSave={handleSave} defaultContent={event.rules_and_regulations} />
       </div>
     </>
   );
 };
 
-export default AdminProblemStatements;
+export default AdminRulesRegulations;

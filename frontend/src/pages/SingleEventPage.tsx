@@ -16,6 +16,7 @@ import Registrations from './Registrations';
 import Participants from './Participants';
 import ResultPage from './ResultPage';
 import { useUser } from '@/hooks/useUser';
+import AdminRulesRegulations from './AdminRulesRegulations';
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -79,6 +80,8 @@ const SingleEventPage = () => {
                 return <ResultPage />;
             case "Problem-Statements":
                 return <AdminProblemStatements event={event} />
+            case "Rules-and-Instructions":
+                return <AdminRulesRegulations event={event} />
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
             default:
