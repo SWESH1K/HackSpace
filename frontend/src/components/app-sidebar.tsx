@@ -88,6 +88,10 @@ export function AppSidebar({ onMenuItemClick, userId, hackathonAdminId,...props 
                   title: "Rules-and-Instructions",
                   url: "#",
                 },
+                {
+                  title: "Settings",
+                  url: "#",
+                }
               ],
             },
           ]

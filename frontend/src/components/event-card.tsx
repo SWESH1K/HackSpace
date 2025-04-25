@@ -7,7 +7,7 @@ interface CardDemoProps {
   event: {
     _id: string;
     title: string;
-    banner_url: string;
+    thumbnail_url: string;
     price_money: number;
     description: string;
     start_time: Date;
@@ -33,7 +33,7 @@ export default function CardDemo({ event }: CardDemoProps) {
     fetchAdminDetails();
   }, [event.admin]);
 
-  const bannerUrl = `${event.banner_url}`;
+  const thumbnail_url = `${event.thumbnail_url}`;
   const startDateTime = format(new Date(event.start_time), 'PP');
 
   return (
@@ -42,7 +42,7 @@ export default function CardDemo({ event }: CardDemoProps) {
         className={cn(
           "cursor-pointer overflow-hidden relative card h-96 rounded-md shadow-xl max-w-sm mx-auto backgroundImage flex flex-col justify-between p-4"
         )}
-        style={{ backgroundImage: `url(${bannerUrl})`, backgroundSize: 'cover' }}
+        style={{ backgroundImage: `url(${thumbnail_url})`, backgroundSize: 'cover' }}
       >
         {/* Dark overlay */}
         <div className="absolute w-full h-full top-0 left-0 bg-black opacity-50"></div>

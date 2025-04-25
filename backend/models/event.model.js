@@ -47,6 +47,10 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    thumbnail_url: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
@@ -69,12 +73,13 @@ const EventSchema = new mongoose.Schema({
     },
     rounds: {
         type: [RoundSchema],
-        // validate: {
-        //     validator: function(v) {
-        //         return v.length === this.num_rounds;
-        //     },
-        //     message: props => `Number of rounds (${props.value.length}) does not match num_rounds (${this.num_rounds})`
-        // }
+        validate: {
+            validator: function(v) {
+                return v.length <= this.num_rounds;
+            },
+            message: props => `Number of rounds (${props.value.length}) is greater than num_rounds (${this.num_rounds})`
+        },
+        default: []
     },
     max_team_size: {
         type: Number,
@@ -101,9 +106,9 @@ const EventSchema = new mongoose.Schema({
         ref: 'Admin',
         required: true
     },
-    judges: [{
+    moderators: [{
         type: String,
-        ref: 'Judges',
+        ref: 'Mods',
         default: []
     }]
 }, {

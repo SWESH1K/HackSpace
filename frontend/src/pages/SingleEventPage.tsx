@@ -17,6 +17,7 @@ import Participants from './Participants';
 import ResultPage from './ResultPage';
 import { useUser } from '@/hooks/useUser';
 import AdminRulesRegulations from './AdminRulesRegulations';
+import EditEventPage from './EditEventPage';
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -84,6 +85,8 @@ const SingleEventPage = () => {
                 return <AdminRulesRegulations event={event} />
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
+            case "Settings":
+                return <EditEventPage id={event._id}/>
             default:
                 return <div>Select a menu item to view content</div>;
         }

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { addDays, format } from "date-fns"
+import { format } from "date-fns"
 import { CalendarIcon, ClockIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
@@ -17,13 +17,18 @@ import {
 export function DateTimePickerWithRange({
   className,
   onDateTimeChange,
-}: React.HTMLAttributes<HTMLDivElement> & { onDateTimeChange: (date: DateRange | undefined, startTime: string, endTime: string) => void }) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2025, 0, 20),
-    to: addDays(new Date(2025, 0, 20), 20),
-  })
-  const [startTime, setStartTime] = React.useState<string>("00:00")
-  const [endTime, setEndTime] = React.useState<string>("23:59")
+  initialDateRange,
+  initialStartTime = "00:00",
+  initialEndTime = "23:59",
+}: React.HTMLAttributes<HTMLDivElement> & {
+  onDateTimeChange: (date: DateRange | undefined, startTime: string, endTime: string) => void;
+  initialDateRange?: DateRange;
+  initialStartTime?: string;
+  initialEndTime?: string;
+}) {
+  const [date, setDate] = React.useState<DateRange | undefined>(initialDateRange);
+  const [startTime, setStartTime] = React.useState<string>(initialStartTime);
+  const [endTime, setEndTime] = React.useState<string>(initialEndTime);
 
   const handleDateChange = (date: DateRange | undefined) => {
     setDate(date);
@@ -105,5 +110,5 @@ export function DateTimePickerWithRange({
         </div>
       </div>
     </div>
-  )
+  );
 }

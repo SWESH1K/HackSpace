@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,20 +7,59 @@ import { DateTimePickerWithRange } from '@/components/DateTimePickerWithRange';
 import { DateRange } from 'react-day-picker';
 import { useToast } from '@/hooks/use-toast';
 
-const CreateEventPage = () => {
+interface EditEventPageProps {
+    id: string;
+}
+
+const EditEventPage: React.FC<EditEventPageProps>  = ({id}) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [title, setTitle] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [description, setDescription] = useState('');
   const [priceMoney, setPriceMoney] = useState(10000);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>({ from: new Date(), to: new Date() });
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [startTime, setStartTime] = useState<string>("00:00");
   const [endTime, setEndTime] = useState<string>("23:59");
   const [numRounds, setNumRounds] = useState(1);
   const [maxTeamSize, setMaxTeamSize] = useState(5);
   const [maxTeams, setMaxTeams] = useState(20);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await fetch(`/api/event/${id}`);
+        const data = await response.json();
+        if (data.success) {
+          const event = data.data[0];
+          setTitle(event.title);
+          setBannerUrl(event.banner_url);
+          setThumbnailUrl(event.thumbnail_url);
+          setDescription(event.description);
+          setPriceMoney(event.price_money);
+          setDateRange({
+            from: new Date(event.start_time),
+            to: new Date(event.end_time),
+          });
+          setStartTime(new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+          setEndTime(new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+          setNumRounds(event.num_rounds);
+          setMaxTeamSize(event.max_team_size);
+          setMaxTeams(event.max_teams);
+        } else {
+          toast({ title: 'Error', description: 'Failed to fetch event data' });
+          navigate('/events');
+        }
+      } catch (error) {
+        toast({ title: 'Error', description: `Failed to fetch event: ${error}` });
+        navigate('/events');
+      }
+    };
+
+    fetchEvent();
+  }, [id, navigate, toast]);
 
   const handleDateTimeChange = (date: DateRange | undefined, startTime: string, endTime: string) => {
     setDateRange(date);
@@ -30,11 +69,10 @@ const CreateEventPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const event = {
+    const updatedEvent = {
       title,
       banner_url: bannerUrl,
-      thumbnail_url: thumbnailUrl,
-      description: description,
+      description,
       price_money: priceMoney,
       start_time: dateRange?.from ? new Date(`${dateRange.from.toDateString()} ${startTime}`) : null,
       end_time: dateRange?.to ? new Date(`${dateRange.to.toDateString()} ${endTime}`) : null,
@@ -44,38 +82,24 @@ const CreateEventPage = () => {
     };
 
     try {
-      // Send the event data to the backend
-      const response = await fetch('/api/event', {
-        method: 'POST',
+      const response = await fetch(`/api/event/updateEvent/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(event),
+        body: JSON.stringify(updatedEvent),
       });
 
       if (response.ok) {
         const resData = await response.json();
-        // Show success toast
-        toast({
-          title: 'Success',
-          description: resData.message || `${event.title} created successfully!`,
-        });
-        // Navigate to events page
-        navigate('/events');
+        toast({ title: 'Success', description: resData.message || 'Event updated successfully!' });
+        navigate(`/events`);
       } else {
         const errorData = await response.json();
-        // Show error toast with message from response
-        toast({
-          title: 'Error',
-          description: errorData.message || 'Failed to create event',
-        });
+        toast({ title: 'Error', description: errorData.message || 'Failed to update event' });
       }
     } catch (error) {
-      // Show error toast with generic message
-      toast({
-        title: 'Error',
-        description: `Failed to create event: ${error}`,
-      });
+      toast({ title: 'Error', description: `Failed to update event: ${error}` });
     }
   };
 
@@ -84,36 +108,42 @@ const CreateEventPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl items-center bg-white dark:bg-black bg-opacity-50 rounded-md">
         <div className="hidden md:block">
           <img
-            src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAxL3Jhd3BpeGVsb2ZmaWNlM19waG90b19vZl9hX2JsYWNrX2Fic3RyYWN0X3dhbGxwYXBlcl9zaW1wbGVfYmxhY19lZmZjMDg5MS1jYjVjLTRjOTAtOTYzZS0yZDIxNDEyZDEwZTlfMS5qcGc.jpg"
-            alt="Event"
+            src={thumbnailUrl || 'https://via.placeholder.com/550'}
+            alt="Event Banner"
             className="w-full h-full object-cover rounded-md"
-            // style={{ height: "550px" }}
+            style={{ height: "550px", paddingInline: "30px" }}
           />
         </div>
-        <div className="w-full max-w-md mx-auto items-stretch pr-5">
-          <h1 className="text-2xl font-bold mt-[20px] mb-4 text-center">Create Hackathon</h1>
+        <div className="w-full max-w-md mx-auto items-stretch p-5">
+          <h1 className="text-2xl font-bold mt-[20px] mb-4 text-center">Edit Hackathon</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
             />
-            <Input
-              type="text"
-              placeholder="Banner URL"
-              value={bannerUrl}
-              onChange={(e) => setBannerUrl(e.target.value)}
-              required
-            />
-            <Input
-              type="text"
-              placeholder="Thumbnail URL"
-              value={thumbnailUrl}
-              onChange={(e) => setThumbnailUrl(e.target.value)}
-              required
-            />
+            <label className="block">
+                <span className="text-gray-700">Banner URL</span>
+                <Input
+                  type="text"
+                  placeholder="Banner URL"
+                  value={bannerUrl}
+                  onChange={(e) => setBannerUrl(e.target.value)}
+                  required
+                />
+            </label>
+            <label className="block">
+                <span className="text-gray-700">Thumbnail URL</span>
+                <Input
+                  type="text"
+                  placeholder="Thumbnail URL"
+                  value={thumbnailUrl}
+                  onChange={(e) => setThumbnailUrl(e.target.value)}
+                  required
+                />
+            </label>
             <Textarea
               placeholder="Description"
               value={description}
@@ -130,7 +160,12 @@ const CreateEventPage = () => {
                 required
               />
             </label>
-            <DateTimePickerWithRange onDateTimeChange={handleDateTimeChange} />
+            <DateTimePickerWithRange
+              onDateTimeChange={handleDateTimeChange}
+              initialDateRange={dateRange}
+              initialStartTime={startTime}
+              initialEndTime={endTime}
+            />
             <label className="block">
               <span className="text-gray-700">Number of Rounds</span>
               <Input
@@ -162,7 +197,7 @@ const CreateEventPage = () => {
               />
             </label>
             <Button type="submit" className="w-full">
-              Create
+              Update
             </Button>
           </form>
         </div>
@@ -171,4 +206,4 @@ const CreateEventPage = () => {
   );
 };
 
-export default CreateEventPage;
+export default EditEventPage;

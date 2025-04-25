@@ -5,6 +5,7 @@ export interface Event {
   _id: string;
   title: string;
   banner_url: string;
+  thumbnail_url: string;
   description: string;
   price_money: number;
   start_time: Date;
