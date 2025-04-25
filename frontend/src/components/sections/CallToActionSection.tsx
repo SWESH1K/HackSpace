@@ -6,7 +6,7 @@ const CallToActionSection = () => {
   return (
     <section className="py-24 px-6 md:px-10 bg-gradient-to-br from-primary/10 to-secondary/10">
       <motion.div
-        className="max-w-4xl mx-auto text-center"
+        className="max-w-4xl mx-auto relative"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}

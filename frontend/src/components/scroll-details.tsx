@@ -56,7 +56,7 @@ const content = [
   
 export function StickyScrollContent() {
   return (
-    <div className="p-10 bg-white">
+    <div className="p-10 bg-white" style={{ position: 'relative' }}>
       <StickyScroll content={content} />
     </div>
   );

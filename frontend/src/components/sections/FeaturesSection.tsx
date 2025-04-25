@@ -53,7 +53,7 @@ const FeaturesSection = () => {
   return (
     <section className="py-20 px-6 md:px-10 bg-background">
       <motion.div
-        className="max-w-7xl mx-auto"
+        className="max-w-7xl mx-auto relative"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}

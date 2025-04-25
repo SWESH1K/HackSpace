@@ -12,7 +12,7 @@ const HowItWorksSection = () => {
   return (
     <section className="py-20 px-6 md:px-10 bg-muted/50">
       <motion.div
-        className="max-w-6xl mx-auto"
+        className="max-w-6xl mx-auto relative"
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
