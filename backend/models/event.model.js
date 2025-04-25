@@ -36,7 +36,6 @@
 import mongoose from "mongoose";
 import TeamSchema from "./team.model.js";
 import RoundSchema from "./rounds.model.js";
-import EventDetailsSchema from "./event_details.model.js";
 
 const EventSchema = new mongoose.Schema({
     title: {
@@ -77,7 +76,7 @@ const EventSchema = new mongoose.Schema({
             validator: function(v) {
                 return v.length <= this.num_rounds;
             },
-            message: props => `Number of rounds (${props.value.length}) is greater than num_rounds (${this.num_rounds})`
+            message: props => `Marimum rounds reached! If you want to increase rounds then change the max-rounds in settings.`
         },
         default: []
     },

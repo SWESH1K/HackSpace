@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Event } from '@/hooks/useEvents';
+import { Event} from '@/hooks/useEvents';
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -18,6 +18,10 @@ import ResultPage from './ResultPage';
 import { useUser } from '@/hooks/useUser';
 import AdminRulesRegulations from './AdminRulesRegulations';
 import EditEventPage from './EditEventPage';
+import AdminRoundEvaluation from './AdminRoundEvaluation';
+// import { useToast } from '@/hooks/use-toast';
+
+
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -26,6 +30,46 @@ const SingleEventPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [activeContent, setActiveContent] = useState<string>("Overview");
     const user = useUser();
+    // const {toast} = useToast();
+
+    // const onSaveRound = async (round: Round) => {
+    //     try {
+    //       const response = await fetch(`/api/event/${id}/rounds`, {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(round),
+    //       });
+      
+    //       if (response.ok) {
+    //         const resData = await response.json();
+    //         toast({
+    //           title: 'Success',
+    //           description: `Round "${round.name}" saved successfully!`,
+    //         });
+    //         // Optionally update the local state with the new round
+    //         setEvent((prevEvent) => {
+    //           if (!prevEvent) return prevEvent;
+    //           return {
+    //             ...prevEvent,
+    //             rounds: [...prevEvent.rounds, resData.data],
+    //           };
+    //         });
+    //       } else {
+    //         const errorData = await response.json();
+    //         toast({
+    //           title: 'Error',
+    //           description: errorData.message || 'Failed to save round',
+    //         });
+    //       }
+    //     } catch (error) {
+    //       toast({
+    //         title: 'Error',
+    //         description: `Failed to save round: ${error}`,
+    //       });
+    //     }
+    //   };
 
     if(!user) {
         navigate('/login', {replace: true})
@@ -71,6 +115,8 @@ const SingleEventPage = () => {
                 return <ProblemStatements event={event}/>
             case "Rules and Instructions":
                 return <RulesRegulations event={event}/>
+            case "Rounds Evaluation":
+                return <RoundEvaluation event={event}/>
             case "Register":
                 return <Registrations />;
             case "Participants":
@@ -84,7 +130,7 @@ const SingleEventPage = () => {
             case "Rules-and-Instructions":
                 return <AdminRulesRegulations event={event} />
             case "Rounds-Evaluation":
-                return <RoundEvaluation event={event}/>
+                return <AdminRoundEvaluation event={event}/>
             case "Settings":
                 return <EditEventPage id={event._id}/>
             default:

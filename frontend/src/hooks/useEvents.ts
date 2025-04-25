@@ -19,20 +19,18 @@ export interface Event {
   updatedAt: Date;
 }
 
-interface Round {
-  name: String;
+export interface Round {
+  name: string;
   time: Date;
   evaluation_pattern: EvaluationPattern;
   max_marks: number
 }
 
 interface EvaluationPattern {
-  pattern: [
-    {
-      name: String;
+  pattern: {
+      name: string;
       max_marks: number;
-    }
-  ]
+  }[];
 }
 
 export function useEvents() {
