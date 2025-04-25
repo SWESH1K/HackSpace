@@ -17,7 +17,7 @@ export function ScrollingTablet() {
         }
       >
         <img
-          src={`https://cdn.prod.website-files.com/5db1c0d5ca3871e8fd1a7b66/5f63b112c4a60a56655cc04a_0*AbGFV7Ygi5vg-Pv_.png`}
+          src='Hackathon-dummy.png'
           alt="hero"
           height={720}
           width={1400}
