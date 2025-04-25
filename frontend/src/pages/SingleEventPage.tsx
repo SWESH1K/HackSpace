@@ -15,6 +15,7 @@ import Announcements from './Announcements';
 import Registrations from './Registrations';
 import Participants from './Participants';
 import ResultPage from './ResultPage';
+import { useUser } from '@/hooks/useUser';
 
 const SingleEventPage = () => {
     const navigate = useNavigate();
@@ -22,7 +23,12 @@ const SingleEventPage = () => {
     const [event, setEvent] = useState<Event | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [activeContent, setActiveContent] = useState<string>("Overview");
+    const user = useUser();
 
+    if(!user) {
+        navigate('/login', {replace: true})
+    }
+    
     useEffect(() => {
         const fetchEvent = async () => {
             try {
@@ -39,21 +45,22 @@ const SingleEventPage = () => {
                 setError('Failed to fetch event');
             }
         };
-
+        
         fetchEvent();
     }, [id]);
-
+    
     useEffect(() => {
         if (error) {
             console.log("Invalid Event Id");
             navigate('/events');
         }
     }, [error, navigate]);
-
+    
     if (!event) {
         return <div>Event not found</div>;
     }
-
+    
+    console.log(`User: ${user}, Hackathon-Admin: ${event.admin}`)
     const renderMainContent = () => {
         switch (activeContent) {
             case "Overview":
@@ -81,7 +88,11 @@ const SingleEventPage = () => {
 
     return (
         <SidebarProvider>
-            <AppSidebar onMenuItemClick={setActiveContent} />
+            <AppSidebar 
+                onMenuItemClick={setActiveContent}
+                userId={user?.sub}
+                hackathonAdminId={event.admin}
+            />
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b">
                     <div className="flex items-center gap-2 px-3">

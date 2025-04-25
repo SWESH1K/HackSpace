@@ -12,78 +12,84 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
-const data = {
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Overview",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Problem Statements",
-          url: "#",
-        },
-        {
-          title: "Rules and Instructions",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Enrollments",
-      url: "#",
-      items: [
-        {
-          title: "Register",
-          url: "#",
-        },
-        {
-          title: "Participants",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Results and Announcements",
-      url: "#",
-      items: [
-        {
-          title: "Announcements",
-          url: "#",
-        },
-        {
-          title: "Result",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Admin Panel",
-      url: "#",
-      items: [
-        {
-          title: "Problem-Statements",
-          url: "#",
-        },
-        {
-          title: "Rounds-Evaluation",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onMenuItemClick: (title: string) => void;
+  userId: string|undefined;
+  hackathonAdminId: string|undefined;
 }
 
-export function AppSidebar({ onMenuItemClick, ...props }: AppSidebarProps) {
+export function AppSidebar({ onMenuItemClick, userId, hackathonAdminId,...props }: AppSidebarProps) {
   const [activeItem, setActiveItem] = React.useState<string | null>(null);
+  const data = {
+    navMain: [
+      {
+        title: "Getting Started",
+        url: "#",
+        items: [
+          {
+            title: "Overview",
+            url: "#",
+            isActive: true,
+          },
+          {
+            title: "Problem Statements",
+            url: "#",
+          },
+          {
+            title: "Rules and Instructions",
+            url: "#",
+          },
+        ],
+      },
+      {
+        title: "Enrollments",
+        url: "#",
+        items: [
+          {
+            title: "Register",
+            url: "#",
+          },
+          {
+            title: "Participants",
+            url: "#",
+          },
+        ],
+      },
+      {
+        title: "Results and Announcements",
+        url: "#",
+        items: [
+          {
+            title: "Announcements",
+            url: "#",
+          },
+          {
+            title: "Result",
+            url: "#",
+          },
+        ],
+      },
+      ...(userId === hackathonAdminId
+        ? [
+            {
+              title: "Admin Panel",
+              url: "#",
+              items: [
+                {
+                  title: "Problem-Statements",
+                  url: "#",
+                },
+                {
+                  title: "Rounds-Evaluation",
+                  url: "#",
+                },
+              ],
+            },
+          ]
+        : []),
+    ],
+  };
 
   const handleItemClick = (title: string) => {
     setActiveItem(title);
