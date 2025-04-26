@@ -84,6 +84,8 @@ const SingleEventPage = () => {
                 return <AdminRulesRegulations event={event} />
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
+            case "All Teams":
+                return <div>All Teams for the Hackathon</div>;
             default:
                 return <div>Select a menu item to view content</div>;
         }

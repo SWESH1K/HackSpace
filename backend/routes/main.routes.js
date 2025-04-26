@@ -1,8 +1,11 @@
 import express from "express";
 import eventRouter from "./event.routes.js";
 import eventDetailsRouter from "./eventDetails.routes.js";
+import hackathonProfileRouter from "./hackathon_profile.routes.js";
+import teamRouter from "./team.routes.js";
 import axios from "axios";
 import getAuth0ManagementApiToken from "../utils/getAuth0ManagementApiToken.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 const router = express.Router();
 
@@ -27,7 +30,12 @@ router.get('/api/user/:id', async (req, res) => {
     }
 });
 
+// Public routes
 router.use("/api/event", eventRouter);
 router.use("/api/event-details", eventDetailsRouter);
+
+// Protected routes - require authentication
+router.use("/api/hackathon-profile", requireAuth, hackathonProfileRouter);
+router.use("/api/team", requireAuth, teamRouter);
 
 export default router;

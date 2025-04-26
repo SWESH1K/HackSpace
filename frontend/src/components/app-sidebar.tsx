@@ -58,6 +58,10 @@ export function AppSidebar({ onMenuItemClick, userId, hackathonAdminId,...props 
             title: "Participants",
             url: "#",
           },
+          {
+            title: "All Teams",
+            url: "#",
+          },
         ],
       },
       {
