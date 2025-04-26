@@ -3,6 +3,8 @@ import eventRouter from "./event.routes.js";
 import eventDetailsRouter from "./eventDetails.routes.js";
 import axios from "axios";
 import getAuth0ManagementApiToken from "../utils/getAuth0ManagementApiToken.js";
+import admin from "firebase-admin"; // Firebase Admin SDK
+
 
 const router = express.Router();
 
@@ -24,6 +26,20 @@ router.get('/api/user/:id', async (req, res) => {
         res.status(200).json({ name: user.name, picture: user.picture });
     } catch (error) {
         res.status(500).json({ success: false, message: `Server Error: ${error.message}` });
+    }
+});
+
+router.get('/auth/firebase', async (req, res) => {
+    const uid = req.user.sub; // Auth0 user ID
+
+    try {
+        const customToken = await admin.auth().createCustomToken(uid);
+        res.json({ firebaseToken: customToken });
+    } catch (err) {
+        res.status(500).send({
+            message: 'Something went wrong acquiring a Firebase token.',
+            error: err.message
+        });
     }
 });
 

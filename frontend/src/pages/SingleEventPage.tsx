@@ -11,7 +11,7 @@ import AdminProblemStatements from './AdminProblemStatements';
 import ProblemStatements from './ProblemStatements';
 import RulesRegulations from './RulesRegulations';
 import RoundEvaluation from './RoundEvaluation';
-import Announcements from './Announcements';
+import {Announcements} from './Announcements';
 import Registrations from './Registrations';
 import Participants from './Participants';
 import ResultPage from './ResultPage';
@@ -30,46 +30,6 @@ const SingleEventPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [activeContent, setActiveContent] = useState<string>("Overview");
     const user = useUser();
-    // const {toast} = useToast();
-
-    // const onSaveRound = async (round: Round) => {
-    //     try {
-    //       const response = await fetch(`/api/event/${id}/rounds`, {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(round),
-    //       });
-      
-    //       if (response.ok) {
-    //         const resData = await response.json();
-    //         toast({
-    //           title: 'Success',
-    //           description: `Round "${round.name}" saved successfully!`,
-    //         });
-    //         // Optionally update the local state with the new round
-    //         setEvent((prevEvent) => {
-    //           if (!prevEvent) return prevEvent;
-    //           return {
-    //             ...prevEvent,
-    //             rounds: [...prevEvent.rounds, resData.data],
-    //           };
-    //         });
-    //       } else {
-    //         const errorData = await response.json();
-    //         toast({
-    //           title: 'Error',
-    //           description: errorData.message || 'Failed to save round',
-    //         });
-    //       }
-    //     } catch (error) {
-    //       toast({
-    //         title: 'Error',
-    //         description: `Failed to save round: ${error}`,
-    //       });
-    //     }
-    //   };
 
     if(!user) {
         navigate('/login', {replace: true})
@@ -122,7 +82,7 @@ const SingleEventPage = () => {
             case "Participants":
                 return <Participants />
             case "Announcements":
-                return <Announcements />;
+                return <Announcements event={event}/>;
             case "Result":
                 return <ResultPage />;
             case "Problem-Statements":
