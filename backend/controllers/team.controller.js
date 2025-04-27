@@ -208,7 +208,7 @@ export const handleJoinRequest = async (req, res) => {
             team.accept_invites.accepted.push(participant_id);
             
             // Update requesting user's profile
-            requestingProfile.team_id = team._id;
+            requestingProfile.team_id = team.team_id;
             requestingProfile.waiting_list = false;
             await requestingProfile.save();
         } else {
