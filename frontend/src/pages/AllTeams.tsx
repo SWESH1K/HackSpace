@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react';
 // import { useUser } from '@/hooks/useUser';
 import { useParams } from 'react-router-dom';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Team {
   _id: string;
@@ -58,6 +67,8 @@ const AllTeams = () => {
   const [teamDetails, setTeamDetails] = useState<Team | null>(null);
   const [pendingUsers, setPendingUsers] = useState<Record<string, TeamMemberInfo>>({});
   const [teamMembers, setTeamMembers] = useState<Record<string, TeamMemberInfo>>({});
+  const [users, setUsers] = useState<Record<string, UserInfo>>({});
+  const [open, setOpen] = useState(false);
 
   // Fetch teams and user profile
   useEffect(() => {
@@ -72,9 +83,35 @@ const AllTeams = () => {
         return data.success ? data.data : null;
       })
     ])
-      .then(([teamsData, profileData]) => {
-        if (teamsData.success) setTeams(teamsData.data);
-        else setError(teamsData.message || 'Failed to fetch teams');
+      .then(async ([teamsData, profileData]) => {
+        if (teamsData.success) {
+          setTeams(teamsData.data);
+          
+          // Fetch user info for team leaders
+          const userInfoMap: Record<string, UserInfo> = {};
+          await Promise.all(teamsData.data.map(async (team: Team) => {
+            try {
+              // First get the hackathon profile to get the user_id
+              const profileRes = await fetch(`/api/hackathon-profile/event/${eventId}/profiles`);
+              const profileData = await profileRes.json();
+              if (profileData.success) {
+                const leaderProfile = profileData.data.find((p: any) => p.participant_id === team.team_lead);
+                if (leaderProfile) {
+                  const res = await fetch(`/api/user/${leaderProfile.user_id}`);
+                  const userData = await res.json();
+                  if (userData) {
+                    userInfoMap[team.team_lead] = userData;
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error fetching team leader data:', error);
+            }
+          }));
+          setUsers(userInfoMap);
+        } else {
+          setError(teamsData.message || 'Failed to fetch teams');
+        }
         setProfile(profileData);
       })
       .catch(() => setError('Failed to fetch teams or profile'))
@@ -340,7 +377,6 @@ const AllTeams = () => {
             </div>
           </>
         )}
-        <div className="mb-4">You are already a member of a team.</div>
         {actionMsg && <div className="mb-2 text-blue-600">{actionMsg}</div>}
         {/* Pending requests section for team lead */}
         {teamDetails && profile.is_team_lead && (
@@ -348,29 +384,32 @@ const AllTeams = () => {
             <h3 className="font-semibold mb-2">Pending Join Requests</h3>
             {teamDetails.pending_members && teamDetails.pending_members.length > 0 ? (
               <ul className="divide-y divide-gray-200 dark:divide-zinc-700">
-                {teamDetails.pending_members.map((member: any) => (
-                  <li key={member.participant_id} className="flex items-center gap-4 py-2">
-                    {pendingUsers[member.user_id]?.picture && (
-                      <img src={pendingUsers[member.user_id].picture} alt={pendingUsers[member.user_id].name} className="w-8 h-8 rounded-full object-cover" />
-                    )}
-                    <div className="flex-1">
-                      <div className="font-medium">{pendingUsers[member.user_id]?.name || member.user_id}</div>
-                      <div className="text-xs text-gray-500 dark:text-zinc-400">Participant ID: {member.participant_id}</div>
-                    </div>
-                    <button
-                      className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 mr-2"
-                      onClick={() => handleRequest(member.participant_id, true)}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                      onClick={() => handleRequest(member.participant_id, false)}
-                    >
-                      Reject
-                    </button>
-                  </li>
-                ))}
+                {teamDetails.pending_members.map((member: any) => {
+                  const pendingUser = pendingUsers[member.participant_id];
+                  return (
+                    <li key={member.participant_id} className="flex items-center gap-4 py-2">
+                      {pendingUser?.picture && (
+                        <img src={pendingUser.picture} alt={pendingUser.name} className="w-8 h-8 rounded-full object-cover" />
+                      )}
+                      <div className="flex-1">
+                        <div className="font-medium">{pendingUser?.name || 'Loading...'}</div>
+                        <div className="text-xs text-gray-500 dark:text-zinc-400">Participant ID: {member.participant_id}</div>
+                      </div>
+                      <button
+                        className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 mr-2"
+                        onClick={() => handleRequest(member.participant_id, true)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                        onClick={() => handleRequest(member.participant_id, false)}
+                      >
+                        Reject
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <div className="text-gray-500">No pending requests.</div>
@@ -380,54 +419,163 @@ const AllTeams = () => {
       </div>
     );
   }
-  
+  console.log("All teams: ", teams);
   return (
-    <div className="max-w-3xl mx-auto mt-8 p-6 bg-white dark:bg-zinc-900 rounded shadow">
-      <h2 className="text-xl font-bold mb-4">All Teams</h2>
-      {actionMsg && <div className="mb-2 text-blue-600">{actionMsg}</div>}
-      <ul className="divide-y divide-gray-200 dark:divide-zinc-700 mb-8">
-        {teams.length === 0 ? (
-          <li>No teams available yet.</li>
-        ) : (
-          teams.map(team => (
-            <li key={team.team_id} className="flex flex-col md:flex-row md:items-center justify-between py-3 gap-2">
-              <div>
-                <span className="font-semibold">{team.name}</span>
-                <span className="ml-2 text-xs text-gray-500">({team.allow_invites ? 'Open' : 'Closed'})</span>
-                <span className="ml-2 text-xs text-gray-500">Members: {team.accept_invites.accepted.length}</span>
+    <div className="container mx-auto px-4 py-8">
+      {/* Create Team Button with Dialog */}
+      <div className="flex justify-center mb-12">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <button
+              className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+              disabled={!!profile?.team_id || !!profile?.waiting_list}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Create Team
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Create New Team</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleCreate} className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="teamName">Team Name</Label>
+                <Input
+                  id="teamName"
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  placeholder="Enter your team name"
+                  className="w-full"
+                  required
+                />
               </div>
-              <button
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-                onClick={() => {
-                  handleJoin(team.team_id, team.event_id);
-                  console.log("The Team: ", team.event_id);
-                }}
-                disabled={!!profile?.waiting_list || !!profile?.team_id}
-              >
-                Join Team
-              </button>
-            </li>
-          ))
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Creating...
+                    </div>
+                  ) : (
+                    'Create Team'
+                  )}
+                </button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Message Display */}
+      {actionMsg && (
+        <div className="max-w-2xl mx-auto mb-8">
+          <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300">
+            {actionMsg}
+          </div>
+        </div>
+      )}
+
+      {/* Two Sections Layout */}
+      <div className="space-y-12">
+        {/* Current Team Section */}
+        {profile?.team_id && teamDetails && (
+          <section className="max-w-4xl mx-auto bg-white dark:bg-zinc-900 rounded-lg shadow-lg overflow-hidden">
+            <div className="p-6 border-b border-gray-200 dark:border-zinc-800">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Your Team</h2>
+            </div>
+            <div className="p-6">
+              {/* Existing team details table */}
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+                  // ...existing team details table code...
+                </table>
+              </div>
+            </div>
+          </section>
         )}
-      </ul>
-      <form onSubmit={handleCreate} className="space-y-4">
-        <h3 className="font-semibold">Create a New Team</h3>
-        <input
-          type="text"
-          className="w-full px-3 py-2 border rounded text-black"
-          placeholder="Team Name"
-          value={teamName}
-          onChange={e => setTeamName(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
-          disabled={!!profile?.waiting_list || !!profile?.team_id || loading}
-        >
-          Create Team
-        </button>
-      </form>
+
+        {/* All Teams Section */}
+        <section className="max-w-5xl mx-auto bg-white dark:bg-zinc-900 rounded-lg shadow-lg overflow-hidden">
+          <div className="p-6 border-b border-gray-200 dark:border-zinc-800">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">All Teams</h2>
+          </div>
+          <div className="p-6">
+            {teams.length === 0 ? (
+              <div className="text-center py-12">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 dark:text-zinc-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <p className="text-gray-500 dark:text-zinc-400">No teams available yet</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+                  <thead className="bg-gray-50 dark:bg-zinc-800">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Team Name</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Members</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Team Lead</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
+                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-zinc-400 uppercase tracking-wider">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-zinc-900 divide-y divide-gray-200 dark:divide-zinc-700">
+                    {teams.map(team => {
+                      const teamLeader = users[team.team_lead];
+                      return (
+                        <tr key={team.team_id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{team.name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500 dark:text-zinc-400">
+                              {team.accept_invites.accepted.length} / 4
+                              <span className="ml-1 text-xs text-gray-400">members</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              {teamLeader?.picture && (
+                                <img src={teamLeader.picture} alt="" className="h-6 w-6 rounded-full mr-2" />
+                              )}
+                              <div className="text-sm text-gray-900 dark:text-white">{teamLeader?.name || 'Loading...'}</div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 text-xs rounded-full ${
+                              team.allow_invites 
+                                ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                            }`}>
+                              {team.allow_invites ? 'Open' : 'Closed'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right">
+                            <button
+                              onClick={() => handleJoin(team.team_id, team.event_id)}
+                              disabled={!!profile?.waiting_list || !!profile?.team_id}
+                              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Join Team
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

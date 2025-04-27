@@ -12,7 +12,7 @@ const CallToActionSection = () => {
         viewport={{ once: true }}
         variants={containerAnimation}
       >
-        <motion.h2 variants={itemAnimation} className="text-3xl md:text-5xl font-bold mb-6">
+        <motion.h2 variants={itemAnimation} className="text-3xl md:text-5xl font-bold mb-6 justify-content-center text-center">
           Ready to Join the Innovation?
         </motion.h2>
         
