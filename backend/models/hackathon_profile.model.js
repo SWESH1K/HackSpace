@@ -17,7 +17,7 @@ const HackathonProfileSchema = new mongoose.Schema({
         required: true
     },
     team_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Team',
         default: null
     },

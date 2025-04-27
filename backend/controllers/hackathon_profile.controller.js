@@ -58,9 +58,7 @@ export const getProfile = async (req, res) => {
         // Get team information if user is in a team
         let teamInfo = null;
         if (profile.team_id) {
-            teamInfo = await Team.findById(profile.team_id)
-                .select('-password') // Exclude sensitive information
-                .lean(); // Convert to plain object
+            teamInfo = await Team.find({"team_id": profile.team_id})
         }
 
         // Check if user has any pending team requests
@@ -90,11 +88,7 @@ export const getEventProfiles = async (req, res) => {
     try {
         const { event_id } = req.params;
 
-        const profiles = await HackathonProfile.find({ event_id })
-            .populate({
-                path: 'team_id',
-                select: '-password' // Exclude sensitive information
-            });
+        const profiles = await HackathonProfile.find({ "event_id": event_id });
 
         res.status(200).json({
             success: true,

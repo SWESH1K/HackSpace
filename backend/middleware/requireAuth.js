@@ -4,7 +4,7 @@ export const requireAuth = (req, res, next) => {
         req.oidc = {
             isAuthenticated: () => true,
             user: {
-                sub: req.body.user_id || 'test-user'  // Use user_id from request body if available
+                sub: req.oidc.user.sub || 'test-user'  // Use user_id from request body if available
             }
         };
         return next();

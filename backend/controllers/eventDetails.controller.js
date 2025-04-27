@@ -40,7 +40,7 @@ export const getEventDetails = async (req, res) => {
         const { id: eventId } = req.params;
 
         if (!eventId) { // Changed validation here
-            return res.status(404).json({ success: false, message: `Event ID is required` });
+            return res.status(404).json({ success: false, message: `Event ID is required, ok?` });
         }
         
         const eventDetails = await EventDetails.findOne({ event: eventId });

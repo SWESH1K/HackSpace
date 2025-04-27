@@ -14,6 +14,7 @@ import RoundEvaluation from './RoundEvaluation';
 import Announcements from './Announcements';
 import Registrations from './Registrations';
 import Participants from './Participants';
+import AllTeams from './AllTeams';
 import ResultPage from './ResultPage';
 import { useUser } from '@/hooks/useUser';
 import AdminRulesRegulations from './AdminRulesRegulations';
@@ -85,7 +86,7 @@ const SingleEventPage = () => {
             case "Rounds-Evaluation":
                 return <RoundEvaluation event={event}/>
             case "All Teams":
-                return <div>All Teams for the Hackathon</div>;
+                return <AllTeams />;
             default:
                 return <div>Select a menu item to view content</div>;
         }

@@ -6,6 +6,8 @@ export const checkHackathonRegistration = async (req, res, next) => {
         const event_id = req.body.event_id || req.params.event_id;
         const user_id = req.oidc.user.sub;
 
+        console.log("This is my event ID", event_id);
+
         if (!event_id) {
             return res.status(400).json({
                 success: false,

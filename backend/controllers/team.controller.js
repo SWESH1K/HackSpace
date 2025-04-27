@@ -52,7 +52,7 @@ export const createTeam = async (req, res) => {
         await team.save();
 
         // Update user's profile
-        profile.team_id = team._id;
+        profile.team_id = team.team_id;
         profile.is_team_lead = true;
         await profile.save();
 
@@ -75,12 +75,14 @@ export const requestToJoinTeam = async (req, res) => {
         const user_id = req.oidc.user.sub;
 
         // Get the team
-        const team = await Team.findOne({ team_id });
+        const team = await Team.findOne({ "team_id": team_id });
         if (!team) {
             return res.status(404).json({
                 success: false,
                 message: "Team not found"
             });
+        } else {
+            console.log("Team found:", team);
         }
 
         // Check if team is accepting invites

@@ -1,10 +1,10 @@
 import NavBar from "@/components/NavBar";
 import { ScrollingTablet } from "@/components/scroll-tab-container";
 import { HeroHighlightDemo } from "@/components/main-screen";
-import FeaturesSection from "@/components/sections/FeaturesSection";
-import HowItWorksSection from "@/components/sections/HowItWorksSection";
-import FeaturedHackathonsSection from "@/components/sections/FeaturedHackathonsSection";
-import CallToActionSection from "@/components/sections/CallToActionSection";
+// import FeaturesSection from "@/components/sections/FeaturesSection";
+// import HowItWorksSection from "@/components/sections/HowItWorksSection";
+// import FeaturedHackathonsSection from "@/components/sections/FeaturedHackathonsSection";
+// import CallToActionSection from "@/components/sections/CallToActionSection";
 
 const HomePage = () => {
   return (
@@ -14,10 +14,10 @@ const HomePage = () => {
       <div style={{ position: 'relative', overflow: 'hidden' }}>
         <ScrollingTablet />
       </div>
-      <FeaturesSection />
+      {/* <FeaturesSection />
       <HowItWorksSection />
       <FeaturedHackathonsSection />
-      <CallToActionSection />
+      <CallToActionSection /> */}
     </div>
   );
 };
