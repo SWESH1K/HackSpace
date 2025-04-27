@@ -14,6 +14,7 @@ import RoundEvaluation from './RoundEvaluation';
 import {Announcements} from './Announcements';
 import Registrations from './Registrations';
 import Participants from './Participants';
+import AllTeams from './AllTeams';
 import ResultPage from './ResultPage';
 import { useUser } from '@/hooks/useUser';
 import AdminRulesRegulations from './AdminRulesRegulations';
@@ -93,6 +94,8 @@ const SingleEventPage = () => {
                 return <AdminRoundEvaluation event={event}/>
             case "Settings":
                 return <EditEventPage id={event._id}/>
+            case "All Teams":
+                return <AllTeams />;
             default:
                 return <div>Select a menu item to view content</div>;
         }

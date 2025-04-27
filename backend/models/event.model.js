@@ -89,16 +89,14 @@ const EventSchema = new mongoose.Schema({
         required: true
     },
     participants_teams: [{
-        type: TeamSchema,
-        ref: 'Teams',
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team',
         validate: {
             validator: function(v) {
-                return v.length <= this.max_teams;
+                return this.participants_teams.length <= this.max_teams;
             },
-            message: props => `Number of participant teams (${props.value.length}) exceeds the maximum allowed (${this.maxTeams})`
-        },
-        default: []
+            message: props => `Number of participant teams exceeds the maximum allowed`
+        }
     }],
     admin: {
         type: String,
@@ -114,4 +112,5 @@ const EventSchema = new mongoose.Schema({
     timestamps: true
 });
 
-export default Event = new mongoose.model('Event', EventSchema)
+const Event = mongoose.model('Event', EventSchema);
+export default Event;
